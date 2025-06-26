@@ -28,12 +28,12 @@ export default function CategoriesLayout() {
       <View style={{ flex: 1 }}>
         <MaterialTopTabs>
           <MaterialTopTabs.Screen
-            name="one"
-            options={{ title: "Tab One" }}
+            name="expense"
+            options={{ title: "Expense" }}
           />
           <MaterialTopTabs.Screen
-            name="two"
-            options={{ title: "Tab Two" }}
+            name="income"
+            options={{ title: "Income" }}
           />
         </MaterialTopTabs>
       </View>
