@@ -1,20 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
+import CategoryCard from "@/components/ui/CategoryCard";
+import { ScrollView } from "react-native";
 
 export default function TabOneScreen() {
   return (
-	<View style={styles.container}>
-	  <Text style={styles.title}>Tab One</Text>
-	</View>
+	<ScrollView>
+	  <CategoryCard name="Transportation" icon={"local-gas-station"} iconColor="red" />
+	</ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		justifyContent: "center",
-		alignContent: "center"
-	},
-	title: {
-		fontSize: 30,
-	}
-})
