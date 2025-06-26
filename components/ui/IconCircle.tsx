@@ -17,8 +17,9 @@ const IconCircle = ({ icon, iconSize, color, circleSize }: Props) => {
           backgroundColor: color,
           width: circleSize ?? 50,
           height: circleSize ?? 50,
+          borderRadius: 9999
         }}
-        className={"rounded-full flex justify-center items-center"}
+        className={"flex justify-center items-center"}
       >
         <MaterialIcons size={iconSize ?? 30} name={icon} color={"white"} />
       </View>
