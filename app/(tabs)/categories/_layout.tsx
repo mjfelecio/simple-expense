@@ -1,3 +1,5 @@
+import { Colors } from "@/constants/Colors";
+import { useColorScheme } from "@/hooks/useColorScheme.web";
 import {
 	MaterialTopTabNavigationEventMap,
 	MaterialTopTabNavigationOptions,
@@ -20,10 +22,12 @@ export const MaterialTopTabs = withLayoutContext<
 export default function CategoriesLayout() {
 	// This accounts for the elements in a device that may hide the text above (like status bars)
   const insets = useSafeAreaInsets();
+  const colorScheme = useColorScheme();
+  const theme = Colors[colorScheme ?? 'light'];
 
   return (
     <View style={{ flex: 1, paddingTop: insets.top }}>
-      <Text style={styles.headerText}>Categories</Text>
+      <Text style={[styles.headerText, { color: theme.text }]}>Categories</Text>
 
       <View style={{ flex: 1 }}>
         <MaterialTopTabs>
@@ -46,7 +50,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   headerText: {
-    color: "white",
+    color: 'white',
     fontSize: 30,
     fontWeight: "bold",
     paddingBottom: 12,
