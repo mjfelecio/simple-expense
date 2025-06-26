@@ -20,10 +20,10 @@ export const MaterialTopTabs = withLayoutContext<
 >(Navigator);
 
 export default function CategoriesLayout() {
-	// This accounts for the elements in a device that may hide the text above (like status bars)
+  // This accounts for the elements in a device that may hide the text above (like status bars)
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
-  const theme = Colors[colorScheme ?? 'light'];
+  const theme = Colors[colorScheme ?? "light"];
 
   return (
     <View style={{ flex: 1, paddingTop: insets.top }}>
@@ -33,11 +33,11 @@ export default function CategoriesLayout() {
         <MaterialTopTabs>
           <MaterialTopTabs.Screen
             name="expense"
-            options={{ title: "Expense" }}
+            options={{ title: "Expense",tabBarLabelStyle: styles.tabBarLabel }}
           />
           <MaterialTopTabs.Screen
             name="income"
-            options={{ title: "Income" }}
+            options={{ title: "Income", tabBarLabelStyle: styles.tabBarLabel }}
           />
         </MaterialTopTabs>
       </View>
@@ -46,14 +46,15 @@ export default function CategoriesLayout() {
 }
 
 const styles = StyleSheet.create({
-  tabBarLabel: {
-    fontSize: 18,
-  },
   headerText: {
-    color: 'white',
+    color: "white",
     fontSize: 30,
     fontWeight: "bold",
-    paddingBottom: 12,
-		textAlign: "center"
+    paddingBottom: 4,
+    textAlign: "center",
   },
+  tabBarLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+  }
 });
