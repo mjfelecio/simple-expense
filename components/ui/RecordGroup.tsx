@@ -1,6 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { FlatList, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import RecordCard from "./RecordCard";
 
 export type Record = {
@@ -31,7 +31,7 @@ const records: Record[] = [
 const today = new Date();
 const monthDate = 27;
 const dayName = "Friday";
-const monthAndYear = "June 2025"
+const monthAndYear = "June 2025";
 const groupBalance = -204;
 
 const RecordGroup = () => {
@@ -44,20 +44,20 @@ const RecordGroup = () => {
           <Text className="text-white">{monthAndYear}</Text>
         </View>
         <View className="flex-1"></View>
-        <Text className="text-white text-2xl text-semibold">{groupBalance}</Text>
+        <Text className="text-white text-2xl text-semibold">
+          {groupBalance}
+        </Text>
       </View>
-      <FlatList
-        data={records}
-        renderItem={({ item }) => (
-          <RecordCard
-            icon={item.icon}
-            iconColor={item.iconColor}
-            name={item.name}
-            value={item.value}
-            type={item.type}
-          />
-        )}
-      />
+      {records.map((record, index) => (
+        <RecordCard
+          key={index}
+          icon={record.icon}
+          iconColor={record.iconColor}
+          name={record.name}
+          value={record.value}
+          type={record.type}
+        />
+      ))}
     </View>
   );
 };
