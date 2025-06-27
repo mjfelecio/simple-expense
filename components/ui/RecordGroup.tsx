@@ -2,14 +2,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
 import { Text, View } from "react-native";
 import RecordCard from "./RecordCard";
-
-export type Record = {
-  icon: keyof typeof MaterialIcons.glyphMap;
-  iconColor: string;
-  name: string;
-  value: number;
-  type: "expense" | "income";
-};
+import { Record } from "@/shared.types";
 
 const records: Record[] = [
   {

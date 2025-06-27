@@ -1,17 +1,9 @@
-import { MaterialIcons } from "@expo/vector-icons";
+import { Record } from "@/shared.types";
 import React from "react";
 import { Text, TouchableHighlight, View } from "react-native";
 import IconCircle from "./IconCircle";
 
-type Props = {
-  icon: keyof typeof MaterialIcons.glyphMap;
-  iconColor: string;
-  name: string;
-  value: number;
-  type: "expense" | "income";
-};
-
-const RecordCard = ({ icon, iconColor, name, value, type }: Props) => {
+const RecordCard = ({ icon, iconColor, name, value, type }: Record) => {
   const sign = type === "expense" ? "-" : ""
 
   return (
