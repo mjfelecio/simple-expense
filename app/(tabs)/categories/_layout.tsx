@@ -1,9 +1,9 @@
 import { Colors } from "@/constants/Colors";
 import { useColorScheme } from "@/hooks/useColorScheme.web";
 import {
-	MaterialTopTabNavigationEventMap,
-	MaterialTopTabNavigationOptions,
-	createMaterialTopTabNavigator,
+  MaterialTopTabNavigationEventMap,
+  MaterialTopTabNavigationOptions,
+  createMaterialTopTabNavigator,
 } from "@react-navigation/material-top-tabs";
 import { ParamListBase, TabNavigationState } from "@react-navigation/native";
 import { withLayoutContext } from "expo-router";
@@ -28,12 +28,11 @@ export default function CategoriesLayout() {
   return (
     <View style={{ flex: 1, paddingTop: insets.top }}>
       <Text style={[styles.headerText, { color: theme.text }]}>Categories</Text>
-
       <View style={{ flex: 1 }}>
         <MaterialTopTabs>
           <MaterialTopTabs.Screen
             name="expense"
-            options={{ title: "Expense",tabBarLabelStyle: styles.tabBarLabel }}
+            options={{ title: "Expense", tabBarLabelStyle: styles.tabBarLabel }}
           />
           <MaterialTopTabs.Screen
             name="income"
@@ -56,5 +55,5 @@ const styles = StyleSheet.create({
   tabBarLabel: {
     fontSize: 16,
     fontWeight: "bold",
-  }
+  },
 });
