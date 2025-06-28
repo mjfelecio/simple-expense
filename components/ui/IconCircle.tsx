@@ -17,7 +17,7 @@ const IconCircle = ({ icon, iconSize, color, circleSize }: Props) => {
           backgroundColor: color,
           width: circleSize ?? 50,
           height: circleSize ?? 50,
-          borderRadius: 9999
+          borderRadius: 99
         }}
         className={"flex justify-center items-center"}
       >
