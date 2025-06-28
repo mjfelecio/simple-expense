@@ -19,14 +19,30 @@ export const useAppDB = () => {
   const addCategory = async (category: Category) => {
     const { name, type, color, icon } = category;
 
+    await init();
+
     return await db.runAsync(
       "INSERT INTO categories (name, type, color, icon) VALUES (?, ?, ?, ?)",
-      name, type, color, icon 
+      name,
+      type,
+      color,
+      icon
     );
+  };
+
+  const getAllExpenseCategories = async (): Promise<Category[]> => {
+    await init();
+
+    const result = await db.getAllAsync<Category>(
+      "SELECT * FROM categories WHERE type = ?",
+      "expense"
+    );
+    return result;
   };
 
   return {
     init,
     addCategory,
+    getAllExpenseCategories,
   };
 };
