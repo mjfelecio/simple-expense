@@ -1,7 +1,8 @@
 import CategoryRadioButton from "@/components/ui/CategoryRadioButton";
+import IconCircle from "@/components/ui/IconCircle";
 import { useLocalSearchParams } from "expo-router";
 import React from "react";
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CategoryDetails = () => {
@@ -28,6 +29,19 @@ const CategoryDetails = () => {
         <View>
           <Text className="text-white text-2xl font-semibold pt-2">Type</Text>
           <CategoryRadioButton />
+        </View>
+        {/* Color */}
+        <View>
+          <Text className="text-white text-2xl font-semibold py-2">Color</Text>
+          <View className="flex-row gap-2">
+            {/* Selected Color */}
+            <View className="bg-[#0FF] rounded-full size-[50px]"></View>
+            {/* Select Color Button */}
+            <TouchableOpacity onPress={() => alert("Pick color")}>
+              <IconCircle icon={"colorize"} color={"gray"} />
+            </TouchableOpacity>
+          </View>
+          {/* <ColorPicker /> */}
         </View>
       </View>
     </SafeAreaView>
