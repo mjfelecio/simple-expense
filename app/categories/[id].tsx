@@ -1,7 +1,8 @@
 import CategoryRadioButton from "@/components/ui/CategoryRadioButton";
 import ColorPickerModal from "@/components/ui/ColorPickerModal";
 import IconCircle from "@/components/ui/IconCircle";
-import { Category } from "@/shared.types";
+import IconPickerModal from "@/components/ui/IconPickerModal";
+import { Category, IconName } from "@/shared.types";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -12,16 +13,13 @@ const CategoryDetails = () => {
   const isEdit = id !== "new";
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
+  const [isIconModalVisible, setIsIconModalVisible] = useState(false);
 
   // Form States
   const [name, setName] = useState<string | undefined>();
   const [category, setCategory] = useState<Category | undefined>();
   const [iconColor, setIconColor] = useState<string>("#A9A9A9"); // Default color
-
-  const handleColorPickerClose = (value: string) => {
-    setIconColor(value);
-    setIsModalVisible(false);
-  };
+  const [selectedIcon, setSelectedIcon] = useState<IconName>("help-outline");
 
   // Testing purposes only
   const logState = () => {
@@ -30,12 +28,14 @@ const CategoryDetails = () => {
 
   return (
     <SafeAreaView className="flex-1 p-4">
-      {/* Header */}
+      {/*=== Header ===*/}
       <Text className="text-white text-3xl font-semibold">
         {isEdit ? "Edit" : "Add"} Category
       </Text>
-      {/* Form */}
+
+      {/*=== Form === */}
       <View className="pt-6 gap-2">
+
         {/* Name */}
         <View>
           <Text className="text-white text-2xl font-semibold">Name</Text>
@@ -46,11 +46,13 @@ const CategoryDetails = () => {
             className="placeholder:text-gray-300 p-2 text-xl text-white border-2 border-white rounded-md"
           />
         </View>
+
         {/* Category Type */}
         <View>
           <Text className="text-white text-2xl font-semibold pt-2">Type</Text>
           <CategoryRadioButton onSelect={setCategory} />
         </View>
+
         {/* Color */}
         <View>
           <Text className="text-white text-2xl font-semibold py-2">Color</Text>
@@ -72,7 +74,31 @@ const CategoryDetails = () => {
           <ColorPickerModal
             visible={isModalVisible}
             initialColor={iconColor}
-            onClose={handleColorPickerClose}
+            onClose={(icon) => {
+              setIconColor(icon);
+              setIsModalVisible(false);
+            }}
+          />
+        </View>
+
+        {/* Icon */}
+        <View>
+          <Text className="text-white text-2xl font-semibold py-2">Icon</Text>
+          <View className="flex-row gap-2">
+            {/* Selected Icon */}
+            <IconCircle icon={selectedIcon} color="transparent" />
+            {/* Select Icon Button */}
+            <TouchableOpacity onPress={() => setIsIconModalVisible(true)}>
+              <IconCircle icon={"palette"} color={"gray"} />
+            </TouchableOpacity>
+          </View>
+          <IconPickerModal
+            visible={isIconModalVisible}
+            onClose={(icon) => {
+              setSelectedIcon(icon);
+              setIsIconModalVisible(false);
+            }}
+            initialIcon={selectedIcon}
           />
         </View>
       </View>
