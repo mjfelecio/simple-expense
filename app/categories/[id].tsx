@@ -1,5 +1,6 @@
 import CategoryRadioButton from "@/components/ui/CategoryRadioButton";
 import IconCircle from "@/components/ui/IconCircle";
+import { Category } from "@/shared.types";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -11,9 +12,15 @@ const CategoryDetails = () => {
 
   // Form States
   const [name, setName] = useState<string | undefined>();
+  const [category, setCategory] = useState<Category | undefined>();
+
+  // Testing purposes only
+  const logState = () => {
+    alert(`Name: ${name} Category: ${category}`)
+  }
 
   return (
-    <SafeAreaView className="p-4">
+    <SafeAreaView className="flex-1 p-4">
       {/* Header */}
       <Text className="text-white text-3xl font-semibold">
         {isEdit ? "Edit" : "Add"} Category
@@ -33,7 +40,7 @@ const CategoryDetails = () => {
         {/* Category Type */}
         <View>
           <Text className="text-white text-2xl font-semibold pt-2">Type</Text>
-          <CategoryRadioButton />
+          <CategoryRadioButton onSelect={setCategory} />
         </View>
         {/* Color */}
         <View>
@@ -49,6 +56,10 @@ const CategoryDetails = () => {
           {/* <ColorPicker /> */}
         </View>
       </View>
+      {/* Logging the form states for testing */}
+      <TouchableOpacity className="absolute bottom-10 right-10" onPress={logState}>
+        <IconCircle icon={"logo-dev"} color={"gray"} />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };
