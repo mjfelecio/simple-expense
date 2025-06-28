@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const CategoryDetails = () => {
+const CategoryForm = () => {
   const { id } = useLocalSearchParams();
   const isEdit = id !== "new";
 
@@ -137,4 +137,4 @@ const CategoryDetails = () => {
   );
 };
 
-export default CategoryDetails;
+export default CategoryForm;
