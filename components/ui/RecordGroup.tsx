@@ -1,8 +1,7 @@
-import { MaterialIcons } from "@expo/vector-icons";
+import { Record } from "@/shared.types";
 import React from "react";
 import { Text, View } from "react-native";
 import RecordCard from "./RecordCard";
-import { Record } from "@/shared.types";
 
 const records: Record[] = [
   {
