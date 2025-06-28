@@ -4,7 +4,7 @@ import IconCircle from "@/components/ui/IconCircle";
 import IconPickerModal from "@/components/ui/IconPickerModal";
 import { DEFAULT_ICON, DEFAULT_ICON_COLOR } from "@/constants/Defaults";
 import { Category, IconName } from "@/shared.types";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,12 +18,38 @@ const CategoryDetails = () => {
 
   // Form States
   const [name, setName] = useState<string | undefined>();
-  const [category, setCategory] = useState<Category | undefined>();
+  const [category, setCategory] = useState<Category>("expense");
   const [iconColor, setIconColor] = useState<string>(DEFAULT_ICON_COLOR);
   const [selectedIcon, setSelectedIcon] = useState<IconName>(DEFAULT_ICON);
 
+  const handleSubmit = () => {
+    if (!name || name.trim() === "") {
+      alert("Name must be present");
+      return;
+    }
+
+    console.log("Form Submission Details:");
+    console.log("Name:", name);
+    console.log("Category:", category);
+    console.log("Icon Color:", iconColor);
+    console.log("Selected Icon:", selectedIcon);
+
+    alert(
+      JSON.stringify(
+        {
+          name,
+          category,
+          iconColor,
+          selectedIcon,
+        },
+        null,
+        2
+      )
+    );
+  };
+
   return (
-    <SafeAreaView className="flex-1 p-4">
+    <SafeAreaView className="flex-1 p-6">
       {/*=== Header ===*/}
       <Text className="text-white text-3xl font-semibold">
         {isEdit ? "Edit" : "Add"} Category
@@ -31,7 +57,6 @@ const CategoryDetails = () => {
 
       {/*=== Form === */}
       <View className="pt-6 gap-2">
-
         {/* Name */}
         <View>
           <Text className="text-white text-2xl font-semibold">Name</Text>
@@ -46,7 +71,7 @@ const CategoryDetails = () => {
         {/* Category Type */}
         <View>
           <Text className="text-white text-2xl font-semibold pt-2">Type</Text>
-          <CategoryRadioButton onSelect={setCategory} />
+          <CategoryRadioButton initialValue={category} onSelect={setCategory} />
         </View>
 
         {/* Color */}
@@ -97,6 +122,16 @@ const CategoryDetails = () => {
             initialIcon={selectedIcon}
           />
         </View>
+      </View>
+      <View className="flex flex-row gap-4 self-end">
+        {/* Cancel Button */}
+        <TouchableOpacity onPress={router.back} className=" mt-4">
+          <IconCircle icon={"close"} color={"gray"} type="square" />
+        </TouchableOpacity>
+        {/* Submit Button */}
+        <TouchableOpacity onPress={handleSubmit} className="mt-4">
+          <IconCircle icon={"save"} color={"gray"} type="square" />
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
