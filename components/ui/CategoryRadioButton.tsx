@@ -8,7 +8,7 @@ const CategoryRadioButton = ({
 }: {
   onSelect: (value: Category) => void;
 }) => {
-  const [selectedId, setSelectedId] = useState<string | undefined>();
+  const [selectedId, setSelectedId] = useState<string | undefined>("expense");
 
   const radioButtons = useMemo<RadioButtonProps[]>(
     () => [
