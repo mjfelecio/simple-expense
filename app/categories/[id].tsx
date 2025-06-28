@@ -22,11 +22,6 @@ const CategoryDetails = () => {
   const [iconColor, setIconColor] = useState<string>(DEFAULT_ICON_COLOR);
   const [selectedIcon, setSelectedIcon] = useState<IconName>(DEFAULT_ICON);
 
-  // Testing purposes only
-  const logState = () => {
-    alert(`Name: ${name} Category: ${category}`);
-  };
-
   return (
     <SafeAreaView className="flex-1 p-4">
       {/*=== Header ===*/}
@@ -103,13 +98,6 @@ const CategoryDetails = () => {
           />
         </View>
       </View>
-      {/* Logging the form states for testing */}
-      <TouchableOpacity
-        className="absolute bottom-10 right-10"
-        onPress={logState}
-      >
-        <IconCircle icon={"logo-dev"} color={"gray"} />
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
