@@ -2,6 +2,7 @@ import CategoryRadioButton from "@/components/ui/CategoryRadioButton";
 import ColorPickerModal from "@/components/ui/ColorPickerModal";
 import IconCircle from "@/components/ui/IconCircle";
 import IconPickerModal from "@/components/ui/IconPickerModal";
+import { DEFAULT_ICON, DEFAULT_ICON_COLOR } from "@/constants/Defaults";
 import { Category, IconName } from "@/shared.types";
 import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
@@ -18,8 +19,8 @@ const CategoryDetails = () => {
   // Form States
   const [name, setName] = useState<string | undefined>();
   const [category, setCategory] = useState<Category | undefined>();
-  const [iconColor, setIconColor] = useState<string>("#A9A9A9"); // Default color
-  const [selectedIcon, setSelectedIcon] = useState<IconName>("help-outline");
+  const [iconColor, setIconColor] = useState<string>(DEFAULT_ICON_COLOR);
+  const [selectedIcon, setSelectedIcon] = useState<IconName>(DEFAULT_ICON);
 
   // Testing purposes only
   const logState = () => {
