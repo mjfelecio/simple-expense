@@ -1,8 +1,13 @@
+import { Category } from "@/shared.types";
 import React, { useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 import RadioGroup, { RadioButtonProps } from "react-native-radio-buttons-group";
 
-const CategoryRadioButton = () => {
+const CategoryRadioButton = ({
+  onSelect,
+}: {
+  onSelect: (value: Category) => void;
+}) => {
   const [selectedId, setSelectedId] = useState<string | undefined>();
 
   const radioButtons = useMemo<RadioButtonProps[]>(
@@ -25,10 +30,21 @@ const CategoryRadioButton = () => {
     [selectedId]
   );
 
+  function isCategory(value: string): value is Category {
+    return ["expense", "income"].includes(value);
+  }
+
+  const handleSelect = (value: string) => {
+    if (isCategory(value)) {
+      setSelectedId(value);
+      onSelect(value);
+    }
+  };
+
   return (
     <RadioGroup
       radioButtons={radioButtons}
-      onPress={setSelectedId}
+      onPress={handleSelect}
       selectedId={selectedId}
       layout="row"
       labelStyle={styles.label}
