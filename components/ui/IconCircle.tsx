@@ -9,20 +9,38 @@ type Props = {
   color: string;
   circleSize?: number;
   className?: string;
+  type?: "circle" | "square";
 };
 
-const IconCircle = ({ icon, iconSize, color, circleSize, className }: Props) => {
+const IconCircle = ({
+  icon,
+  iconSize,
+  color,
+  circleSize,
+  className,
+  type
+}: Props) => {
+
+  // This is abomination
+  // TODO: Refactor this to be like an IconBadge that allows for more customization
+  // than this hacky bs
+  const iconContainerStyle = type !== "square"
+  ? 
+  {
+    backgroundColor: color,
+    width: circleSize ?? 50,
+    height: circleSize ?? 50,
+    borderRadius: 99,
+  } : {
+    backgroundColor: color,
+    width: circleSize ?? 50,
+    height: circleSize ?? 50,
+    borderRadius: 12,
+  };
+
   return (
     <View className={className}>
-      <View
-        style={{
-          backgroundColor: color,
-          width: circleSize ?? 50,
-          height: circleSize ?? 50,
-          borderRadius: 99
-        }}
-        className={"flex justify-center items-center"}
-      >
+      <View style={iconContainerStyle} className={"flex justify-center items-center"}>
         <MaterialIcons size={iconSize ?? 30} name={icon} color={"white"} />
       </View>
     </View>
