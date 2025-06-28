@@ -5,10 +5,12 @@ import RadioGroup, { RadioButtonProps } from "react-native-radio-buttons-group";
 
 const CategoryRadioButton = ({
   onSelect,
+  initialValue
 }: {
   onSelect: (value: Category) => void;
+  initialValue: Category;
 }) => {
-  const [selectedId, setSelectedId] = useState<string | undefined>("expense");
+  const [selectedId, setSelectedId] = useState<string | undefined>(initialValue);
 
   const radioButtons = useMemo<RadioButtonProps[]>(
     () => [
