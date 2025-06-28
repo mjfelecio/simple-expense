@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 
 import type { ColorFormatsObject } from "reanimated-color-picker";
@@ -38,24 +38,38 @@ export default function ColorPickerModal({
   return (
     <Modal animationType="slide" visible={visible} transparent={true}>
       <View
-        className="absolute bottom-0 min-w-full"
+        className="absolute bottom-0 min-w-full rounded-t-2xl"
         style={{ backgroundColor: selectedColor }}
       >
-        {/* Close Modal Button - return back the initial color */}
-        <TouchableOpacity
-          className="absolute top-2 right-2"
-          onPress={() => onClose(initialColor)}
-        >
-          <IconCircle icon={"close"} color={"gray"} circleSize={42} />
-        </TouchableOpacity>
-        {/* Save Selection Button - return the selected color */}
-        <TouchableOpacity
-          className="absolute top-16 right-2"
-          onPress={() => onClose(selectedColor)}
-        >
-          <IconCircle icon={"save"} color={"gray"} circleSize={42} />
-        </TouchableOpacity>
-        <View style={colorPickerStyle.pickerContainer}>
+        <View className="flex flex-row items-center justify-between bg-gray-800 px-4 py-3 rounded-t-xl">
+          <Text className="text-2xl font-bold text-white flex-1">
+            Select Icon Color
+          </Text>
+          <View className="flex-row">
+            <TouchableOpacity
+              className="opacity-70 hover:opacity-100"
+              onPress={() => onClose(initialColor)}
+            >
+              <IconCircle
+                icon="close"
+                color="transparent"
+                circleSize={38}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              className="opacity-70 hover:opacity-100"
+              onPress={() => onClose(selectedColor)}
+            >
+              <IconCircle
+                icon="save"
+                color="transparent"
+                circleSize={38}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        <View className="my-4" style={colorPickerStyle.pickerContainer}>
           <ColorPicker
             value={selectedColor}
             sliderThickness={25}
@@ -72,7 +86,7 @@ export default function ColorPickerModal({
             <View style={{ height: 1, backgroundColor: "#bebdbe" }} />
             <PreviewText
               style={colorPickerStyle.previewTxt}
-              colorFormat="hsla"
+              colorFormat="hex"
             />
           </ColorPicker>
         </View>
@@ -87,6 +101,7 @@ const colorPickerStyle = StyleSheet.create({
     fontFamily: "Quicksand",
     fontWeight: "bold",
     marginVertical: 20,
+    color: "black",
   },
   picker: {
     gap: 20,

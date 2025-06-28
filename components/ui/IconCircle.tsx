@@ -4,9 +4,10 @@ import { View } from "react-native";
 
 type Props = {
   icon: keyof typeof MaterialIcons.glyphMap;
+  iconColor?: string;
+  iconSize?: number;
   color: string;
   circleSize?: number;
-  iconSize?: number;
 };
 
 const IconCircle = ({ icon, iconSize, color, circleSize }: Props) => {
