@@ -8,11 +8,12 @@ type Props = {
   iconSize?: number;
   color: string;
   circleSize?: number;
+  className?: string;
 };
 
-const IconCircle = ({ icon, iconSize, color, circleSize }: Props) => {
+const IconCircle = ({ icon, iconSize, color, circleSize, className }: Props) => {
   return (
-    <View>
+    <View className={className}>
       <View
         style={{
           backgroundColor: color,
