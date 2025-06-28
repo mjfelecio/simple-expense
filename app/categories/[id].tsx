@@ -1,13 +1,16 @@
 import CategoryRadioButton from "@/components/ui/CategoryRadioButton";
 import IconCircle from "@/components/ui/IconCircle";
 import { useLocalSearchParams } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CategoryDetails = () => {
   const { id } = useLocalSearchParams();
   const isEdit = id !== "new";
+
+  // Form States
+  const [name, setName] = useState<string | undefined>();
 
   return (
     <SafeAreaView className="p-4">
@@ -21,6 +24,8 @@ const CategoryDetails = () => {
         <View>
           <Text className="text-white text-2xl font-semibold">Name</Text>
           <TextInput
+            value={name}
+            onChangeText={setName}
             placeholder="Enter category name"
             className="placeholder:text-gray-300 p-2 text-xl text-white border-2 border-white rounded-md"
           />
