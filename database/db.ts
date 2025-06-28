@@ -1,3 +1,4 @@
+import { Category } from "@/shared.types";
 import { useSQLiteContext } from "expo-sqlite";
 
 export const useAppDB = () => {
@@ -7,14 +8,25 @@ export const useAppDB = () => {
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS categories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-		type TEXT NOT NULL
         name TEXT NOT NULL,
-        icon TEXT NOT NULL,
-        color TEXT NOT NULL
+        type TEXT NOT NULL,
+        color TEXT NOT NULL,
+        icon TEXT NOT NULL
       );
     `);
   };
+
+  const addCategory = async (category: Category) => {
+    const { name, type, color, icon } = category;
+
+    return await db.runAsync(
+      "INSERT INTO categories (name, type, color, icon) VALUES (?, ?, ?, ?)",
+      name, type, color, icon 
+    );
+  };
+
   return {
     init,
+    addCategory,
   };
 };
