@@ -10,3 +10,10 @@ export type Record = {
   value: number;
   type: CategoryTypes;
 };
+
+export type Category = {
+  name: string;
+  type: CategoryTypes;
+  color: string;
+  icon: IconName;
+};
