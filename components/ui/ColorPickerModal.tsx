@@ -39,7 +39,7 @@ export default function ColorPickerModal({
     <Modal animationType="slide" visible={visible} transparent={true}>
       <View
         className="absolute bottom-0 min-w-full"
-        style={{ backgroundColor: currentColor.value }}
+        style={{ backgroundColor: selectedColor }}
       >
         {/* Close Modal Button - return back the initial color */}
         <TouchableOpacity
