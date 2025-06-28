@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Modal, Text, TouchableOpacity, View } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 
 import type { ColorFormatsObject } from "reanimated-color-picker";
@@ -38,7 +38,7 @@ export default function ColorPickerModal({
   return (
     <Modal animationType="slide" visible={visible} transparent={true}>
       <View
-        className="absolute bottom-0 min-w-full rounded-t-2xl"
+        className="absolute bottom-0 min-w-full rounded-t-3xl"
         style={{ backgroundColor: selectedColor }}
       >
         <View className="flex flex-row items-center justify-between bg-gray-800 px-4 py-3 rounded-t-xl">
@@ -50,26 +50,18 @@ export default function ColorPickerModal({
               className="opacity-70 hover:opacity-100"
               onPress={() => onClose(initialColor)}
             >
-              <IconCircle
-                icon="close"
-                color="transparent"
-                circleSize={38}
-              />
+              <IconCircle icon="close" color="transparent" circleSize={38} />
             </TouchableOpacity>
             <TouchableOpacity
               className="opacity-70 hover:opacity-100"
               onPress={() => onClose(selectedColor)}
             >
-              <IconCircle
-                icon="save"
-                color="transparent"
-                circleSize={38}
-              />
+              <IconCircle icon="save" color="transparent" circleSize={38} />
             </TouchableOpacity>
           </View>
         </View>
 
-        <View className="my-4" style={colorPickerStyle.pickerContainer}>
+        <View className="self-center w-[300px] bg-gray-100 p-5 rounded-2xl my-4 shadow-md">
           <ColorPicker
             value={selectedColor}
             sliderThickness={25}
@@ -77,125 +69,16 @@ export default function ColorPickerModal({
             thumbShape="circle"
             onChange={onColorChange}
             onCompleteJS={onColorPick}
-            style={colorPickerStyle.picker}
           >
-            <Panel5
-              style={[colorPickerStyle.panelStyle, { borderRadius: 4 }]}
-            />
-            <OpacitySlider style={colorPickerStyle.sliderStyle} adaptSpectrum />
-            <View style={{ height: 1, backgroundColor: "#bebdbe" }} />
-            <PreviewText
-              style={colorPickerStyle.previewTxt}
-              colorFormat="hex"
-            />
+            <View className="gap-4">
+              <Panel5 />
+              <OpacitySlider adaptSpectrum />
+              <View className="h-[1px] bg-gray-300" />
+              <PreviewText colorFormat="hex" />
+            </View>
           </ColorPicker>
         </View>
       </View>
     </Modal>
   );
 }
-
-const colorPickerStyle = StyleSheet.create({
-  title: {
-    textAlign: "center",
-    fontFamily: "Quicksand",
-    fontWeight: "bold",
-    marginVertical: 20,
-    color: "black",
-  },
-  picker: {
-    gap: 20,
-  },
-  pickerContainer: {
-    alignSelf: "center",
-    width: 300,
-    backgroundColor: "#eee",
-    padding: 20,
-    borderRadius: 20,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 5,
-    },
-    shadowOpacity: 0.34,
-    shadowRadius: 6.27,
-
-    elevation: 10,
-  },
-  panelStyle: {
-    borderRadius: 16,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  sliderStyle: {
-    borderRadius: 20,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  sliderVerticalStyle: {
-    borderRadius: 20,
-    height: 300,
-
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5,
-  },
-  sliderTitle: {
-    color: "#000",
-    fontWeight: "bold",
-    marginBottom: 5,
-    paddingHorizontal: 4,
-    fontFamily: "Quicksand",
-  },
-  previewStyle: {
-    height: 40,
-    borderRadius: 14,
-  },
-  previewTxt: {
-    color: "#707070",
-    fontFamily: "Quicksand",
-  },
-  inputStyle: {
-    color: "#707070",
-    paddingVertical: 2,
-    borderColor: "#707070",
-    fontSize: 12,
-    marginLeft: 5,
-  },
-  swatchesContainer: {
-    alignItems: "center",
-    flexWrap: "nowrap",
-    gap: 10,
-  },
-  swatchStyle: {
-    borderRadius: 20,
-    height: 30,
-    width: 30,
-    margin: 0,
-    marginBottom: 0,
-    marginHorizontal: 0,
-    marginVertical: 0,
-  },
-});
