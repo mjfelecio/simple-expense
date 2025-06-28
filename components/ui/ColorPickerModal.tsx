@@ -12,7 +12,7 @@ import IconCircle from "./IconCircle";
 
 type Props = {
   visible: boolean;
-  onClose: (value?: string) => void;
+  onClose: (value: string) => void;
   initialColor: string;
 };
 
@@ -21,7 +21,7 @@ export default function ColorPickerModal({
   onClose,
   initialColor,
 }: Props) {
-  const [resultColor, setResultColor] = useState(initialColor);
+  const [selectedColor, setSelectedColor] = useState(initialColor);
   const currentColor = useSharedValue(initialColor);
 
   // runs on the ui thread on color change
@@ -32,23 +32,32 @@ export default function ColorPickerModal({
 
   // runs on the js thread on color pick
   const onColorPick = (color: ColorFormatsObject) => {
-    setResultColor(color.hex);
+    setSelectedColor(color.hex);
   };
 
   return (
     <Modal animationType="slide" visible={visible} transparent={true}>
-      <View className="absolute bottom-0 min-w-full" style={{ backgroundColor: currentColor.value }}>
-        {/* Close Modal Button */}
-        <TouchableOpacity className="absolute top-2 right-2" onPress={() => onClose()}>
+      <View
+        className="absolute bottom-0 min-w-full"
+        style={{ backgroundColor: currentColor.value }}
+      >
+        {/* Close Modal Button - return back the initial color */}
+        <TouchableOpacity
+          className="absolute top-2 right-2"
+          onPress={() => onClose(initialColor)}
+        >
           <IconCircle icon={"close"} color={"gray"} circleSize={42} />
         </TouchableOpacity>
-        {/* Save Selection Button */}
-        <TouchableOpacity className="absolute top-16 right-2" onPress={() => onClose()}>
+        {/* Save Selection Button - return the selected color */}
+        <TouchableOpacity
+          className="absolute top-16 right-2"
+          onPress={() => onClose(selectedColor)}
+        >
           <IconCircle icon={"save"} color={"gray"} circleSize={42} />
         </TouchableOpacity>
         <View style={colorPickerStyle.pickerContainer}>
           <ColorPicker
-            value={resultColor}
+            value={selectedColor}
             sliderThickness={25}
             thumbSize={24}
             thumbShape="circle"
