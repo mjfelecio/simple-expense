@@ -7,10 +7,10 @@ import { useAppDB } from "@/database/db";
 import { Category, CategoryType, IconName } from "@/shared.types";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const EditCategoryForm = () => {
-  const { getCategory, updateCategory } = useAppDB();
+  const { getCategory, updateCategory, deleteCategory } = useAppDB();
   const { id } = useLocalSearchParams();
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -23,34 +23,60 @@ const EditCategoryForm = () => {
   const [selectedIcon, setSelectedIcon] = useState<IconName>(DEFAULT_ICON);
 
   useEffect(() => {
-  const fetchCategory = async (categoryId: number) => {
-    try {
-      const data: Category | null = await getCategory(categoryId);
-      if (data) {
-        setName(data.name);
-        setCategory(data.type);
-        setIconColor(data.color);
-        setSelectedIcon(data.icon);
-      } else {
-        alert("Category not found");
+    const fetchCategory = async (categoryId: number) => {
+      try {
+        const data: Category | null = await getCategory(categoryId);
+        if (data) {
+          setName(data.name);
+          setCategory(data.type);
+          setIconColor(data.color);
+          setSelectedIcon(data.icon);
+        } else {
+          alert("Category not found");
+          router.back();
+        }
+      } catch (error) {
+        console.error("Failed to fetch category:", error);
+        alert("Failed to load category data");
         router.back();
       }
+    };
+
+    try {
+      const categoryId = parseToInt(id);
+      fetchCategory(categoryId);
     } catch (error) {
-      console.error("Failed to fetch category:", error);
-      alert("Failed to load category data");
+      alert("Invalid category ID");
       router.back();
     }
+  }, [id]);
+
+  const handleDelete = () => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this category?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              const categoryID = parseToInt(id);
+              await deleteCategory(categoryID);
+              router.back(); // Navigate back after deletion
+            } catch (error) {
+              console.error("Failed to delete category:", error);
+              alert("Failed to delete category");
+            }
+          },
+        },
+      ]
+    );
   };
-
-  try {
-    const categoryId = parseToInt(id);
-    fetchCategory(categoryId);
-  } catch (error) {
-    alert("Invalid category ID");
-    router.back();
-  }
-}, [id]);
-
 
   const handleSubmit = async () => {
     if (!name || name.trim() === "") {
@@ -156,9 +182,9 @@ const EditCategoryForm = () => {
         </View>
       </View>
       <View className="flex flex-row gap-4 self-end">
-        {/* Cancel Button */}
-        <TouchableOpacity onPress={router.back} className=" mt-4">
-          <IconCircle icon={"close"} color={"gray"} type="square" />
+        {/* Delete Button */}
+        <TouchableOpacity onPress={handleDelete} className=" mt-4">
+          <IconCircle icon={"delete"} color={"red"} type="square" />
         </TouchableOpacity>
         {/* Submit Button */}
         <TouchableOpacity onPress={handleSubmit} className="mt-4">

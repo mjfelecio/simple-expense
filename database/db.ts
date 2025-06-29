@@ -58,7 +58,13 @@ export const useAppDB = () => {
       "SELECT * FROM categories WHERE id = ?",
       id
     );
-  }
+  };
+
+  const deleteCategory = async (id: number) => {
+    await init();
+
+    return await db.runAsync("DELETE FROM categories WHERE id = ?", id);
+  };
 
   const getAllExpenseCategories = async (): Promise<Category[]> => {
     await init();
@@ -87,5 +93,6 @@ export const useAppDB = () => {
     getAllIncomeCategories,
     updateCategory,
     getCategory,
+    deleteCategory
   };
 };
