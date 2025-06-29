@@ -31,6 +31,7 @@ export default function ExpenseCategoriesTab() {
         {categories?.map((record: Category) => (
           <CategoryCard
             key={record.id}
+            id={record.id}
             name={record.name}
             icon={record.icon}
             iconColor={record.color}
