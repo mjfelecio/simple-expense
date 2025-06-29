@@ -11,7 +11,8 @@ export const useAppDB = () => {
         name TEXT NOT NULL,
         type TEXT NOT NULL,
         color TEXT NOT NULL,
-        icon TEXT NOT NULL
+        icon TEXT NOT NULL,
+        UNIQUE(name, type)
       );
     `);
   };
