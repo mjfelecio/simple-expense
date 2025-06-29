@@ -1,6 +1,7 @@
+import IconCircle from "@/components/ui/IconCircle";
 import OverviewCard from "@/components/ui/OverviewCard";
 import RecordGroup from "@/components/ui/RecordGroup";
-import { ScrollView, Text, View } from "react-native";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
@@ -14,6 +15,9 @@ export default function HomeScreen() {
         <RecordGroup />
         <RecordGroup />
       </ScrollView>
+      <TouchableOpacity onPress={() => alert("Adding new record...")} className="absolute bottom-10 right-10">
+        <IconCircle icon="add" color={"gray"} />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
