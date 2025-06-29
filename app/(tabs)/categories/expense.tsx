@@ -38,7 +38,7 @@ export default function ExpenseCategoriesTab() {
         ))}
       </ScrollView>
       <TouchableHighlight className="absolute bottom-10 right-10">
-        <Link href={"/categories/new"}>
+        <Link href={"/categories/new/expense"}>
           <IconCircle icon={"add"} color={"gray"} />
         </Link>
       </TouchableHighlight>
