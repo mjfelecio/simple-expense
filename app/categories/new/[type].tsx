@@ -59,10 +59,17 @@ const AddCategoryForm = () => {
       await addCategory(categoryData);
       router.back();
     } catch (error) {
-      console.error(
-        "Failed to add category:",
-        error instanceof Error ? error.message : error
-      );
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+
+      // Check if error message contains UNIQUE constraint failure
+      if (errorMessage.includes("UNIQUE constraint failed")) {
+        alert(
+          "A category with this name and type already exists. Please choose a different name or type."
+        );
+      } else {
+        alert("Failed to add category. Please try again.");
+      }
     }
   };
 
