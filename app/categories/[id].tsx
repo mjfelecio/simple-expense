@@ -5,20 +5,12 @@ import IconPickerModal from "@/components/ui/IconPickerModal";
 import { DEFAULT_ICON, DEFAULT_ICON_COLOR } from "@/constants/Defaults";
 import { useAppDB } from "@/database/db";
 import { Category, CategoryType, IconName } from "@/shared.types";
-import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CategoryForm = () => {
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    navigation.setOptions({
-      title: "Edit Category",
-    });
-  }, [navigation]);
-
   const { getCategory, updateCategory } = useAppDB();
   const { id } = useLocalSearchParams();
 
