@@ -3,6 +3,7 @@ import ColorPickerModal from "@/components/ui/ColorPickerModal";
 import IconCircle from "@/components/ui/IconCircle";
 import IconPickerModal from "@/components/ui/IconPickerModal";
 import { DEFAULT_ICON, DEFAULT_ICON_COLOR } from "@/constants/Defaults";
+import { useAppDB } from "@/database/db";
 import { CategoryTypes, IconName } from "@/shared.types";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
@@ -10,6 +11,7 @@ import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CategoryForm = () => {
+  const { addCategory } = useAppDB();
   const { id } = useLocalSearchParams();
   const isEdit = id !== "new";
 
@@ -22,30 +24,28 @@ const CategoryForm = () => {
   const [iconColor, setIconColor] = useState<string>(DEFAULT_ICON_COLOR);
   const [selectedIcon, setSelectedIcon] = useState<IconName>(DEFAULT_ICON);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!name || name.trim() === "") {
       alert("Name must be present");
       return;
     }
 
-    console.log("Form Submission Details:");
-    console.log("Name:", name);
-    console.log("Category:", category);
-    console.log("Icon Color:", iconColor);
-    console.log("Selected Icon:", selectedIcon);
+    try {
+      const categoryData = {
+        name,
+        type: category,
+        color: iconColor,
+        icon: selectedIcon,
+      };
 
-    alert(
-      JSON.stringify(
-        {
-          name,
-          category,
-          iconColor,
-          selectedIcon,
-        },
-        null,
-        2
-      )
-    );
+      await addCategory(categoryData);
+      router.back();
+    } catch (error) {
+      console.error(
+        "Failed to add category:",
+        error instanceof Error ? error.message : error
+      );
+    }
   };
 
   return (
