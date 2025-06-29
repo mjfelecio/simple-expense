@@ -32,6 +32,34 @@ export const useAppDB = () => {
     );
   };
 
+  const updateCategory = async (category: Category) => {
+    const { id, name, type, color, icon } = category;
+
+    if (!id) {
+      throw new Error("Category id is required for update");
+    }
+
+    await init();
+
+    return await db.runAsync(
+      "UPDATE categories SET name = ?, type = ?, color = ?, icon = ? WHERE id = ?",
+      name,
+      type,
+      color,
+      icon,
+      id
+    );
+  };
+
+  const getCategory = async (id: number): Promise<Category | null> => {
+    await init();
+
+    return await db.getFirstAsync<Category>(
+      "SELECT * FROM categories WHERE id = ?",
+      id
+    );
+  }
+
   const getAllExpenseCategories = async (): Promise<Category[]> => {
     await init();
 
@@ -57,5 +85,7 @@ export const useAppDB = () => {
     addCategory,
     getAllExpenseCategories,
     getAllIncomeCategories,
+    updateCategory,
+    getCategory,
   };
 };

@@ -4,16 +4,23 @@ import IconCircle from "@/components/ui/IconCircle";
 import IconPickerModal from "@/components/ui/IconPickerModal";
 import { DEFAULT_ICON, DEFAULT_ICON_COLOR } from "@/constants/Defaults";
 import { useAppDB } from "@/database/db";
-import { CategoryType, IconName } from "@/shared.types";
-import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import { Category, CategoryType, IconName } from "@/shared.types";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CategoryForm = () => {
-  const { addCategory } = useAppDB();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: "Edit Category",
+    });
+  }, [navigation]);
+
+  const { getCategory, updateCategory } = useAppDB();
   const { id } = useLocalSearchParams();
-  const isEdit = id !== "new";
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isIconModalVisible, setIsIconModalVisible] = useState(false);
@@ -24,25 +31,64 @@ const CategoryForm = () => {
   const [iconColor, setIconColor] = useState<string>(DEFAULT_ICON_COLOR);
   const [selectedIcon, setSelectedIcon] = useState<IconName>(DEFAULT_ICON);
 
+  useEffect(() => {
+  const fetchCategory = async (categoryId: number) => {
+    try {
+      const data: Category | null = await getCategory(categoryId);
+      if (data) {
+        setName(data.name);
+        setCategory(data.type);
+        setIconColor(data.color);
+        setSelectedIcon(data.icon);
+      } else {
+        alert("Category not found");
+        router.back();
+      }
+    } catch (error) {
+      console.error("Failed to fetch category:", error);
+      alert("Failed to load category data");
+      router.back();
+    }
+  };
+
+  try {
+    const categoryId = parseToInt(id);
+    fetchCategory(categoryId);
+  } catch (error) {
+    alert("Invalid category ID");
+    router.back();
+  }
+}, [id]);
+
+
   const handleSubmit = async () => {
     if (!name || name.trim() === "") {
       alert("Name must be present");
       return;
     }
 
+    let categoryID: number;
+    try {
+      categoryID = parseToInt(id);
+    } catch (error) {
+      alert("Invalid category ID");
+      return;
+    }
+
     try {
       const categoryData = {
+        id: categoryID,
         name,
         type: category,
         color: iconColor,
         icon: selectedIcon,
       };
 
-      await addCategory(categoryData);
+      await updateCategory(categoryData);
       router.back();
     } catch (error) {
       console.error(
-        "Failed to add category:",
+        "Failed to update category:",
         error instanceof Error ? error.message : error
       );
     }
@@ -50,16 +96,11 @@ const CategoryForm = () => {
 
   return (
     <SafeAreaView className="flex-1 p-6">
-      {/*=== Header ===*/}
-      <Text className="text-white text-3xl font-semibold">
-        {isEdit ? "Edit" : "Add"} Category
-      </Text>
-
       {/*=== Form === */}
       <View className="pt-6 gap-2">
         {/* Name */}
         <View>
-          <Text className="text-white text-2xl font-semibold">Name</Text>
+          <Text className="text-white text-2xl font-semibold mb-2">Name</Text>
           <TextInput
             value={name}
             onChangeText={setName}
@@ -138,3 +179,21 @@ const CategoryForm = () => {
 };
 
 export default CategoryForm;
+
+function parseToInt(value: string | string[]): number {
+  let strValue: string;
+
+  if (Array.isArray(value)) {
+    strValue = value[0];
+  } else {
+    strValue = value;
+  }
+
+  const parsed = parseInt(strValue, 10);
+
+  if (isNaN(parsed)) {
+    throw new Error("Invalid id parameter");
+  }
+
+  return parsed;
+}
