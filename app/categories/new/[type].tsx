@@ -4,79 +4,43 @@ import IconCircle from "@/components/ui/IconCircle";
 import IconPickerModal from "@/components/ui/IconPickerModal";
 import { DEFAULT_ICON, DEFAULT_ICON_COLOR } from "@/constants/Defaults";
 import { useAppDB } from "@/database/db";
-import { Category, CategoryType, IconName } from "@/shared.types";
-import { router, useLocalSearchParams } from "expo-router";
+import { CategoryType, IconName } from "@/shared.types";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
-const EditCategoryForm = () => {
-  const { getCategory, updateCategory, deleteCategory } = useAppDB();
-  const { id } = useLocalSearchParams();
+const AddCategoryForm = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: "Add Category",
+      headerTitleStyle: {
+        fontSize: 24,
+      },
+    });
+  }, [navigation]);
+
+  const { addCategory } = useAppDB();
+  const { type } = useLocalSearchParams();
+
+  // Aborts navigation if the type is invalid
+  if (type !== "expense" && type !== "income") {
+    alert("Invalid category type");
+    router.back();
+  }
+
+  // Parses the type param into the valid category types
+  const initialCategory = type === "expense" ? "expense" : "income";
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isIconModalVisible, setIsIconModalVisible] = useState(false);
 
   // Form States
   const [name, setName] = useState<string | undefined>();
-  const [category, setCategory] = useState<CategoryType>("expense");
+  const [category, setCategory] = useState<CategoryType>(initialCategory);
   const [iconColor, setIconColor] = useState<string>(DEFAULT_ICON_COLOR);
   const [selectedIcon, setSelectedIcon] = useState<IconName>(DEFAULT_ICON);
-
-  useEffect(() => {
-    const fetchCategory = async (categoryId: number) => {
-      try {
-        const data: Category | null = await getCategory(categoryId);
-        if (data) {
-          setName(data.name);
-          setCategory(data.type);
-          setIconColor(data.color);
-          setSelectedIcon(data.icon);
-        } else {
-          alert("Category not found");
-          router.back();
-        }
-      } catch (error) {
-        console.error("Failed to fetch category:", error);
-        alert("Failed to load category data");
-        router.back();
-      }
-    };
-
-    try {
-      const categoryId = parseToInt(id);
-      fetchCategory(categoryId);
-    } catch (error) {
-      alert("Invalid category ID");
-      router.back();
-    }
-  }, [id]);
-
-  const handleDelete = () => {
-    Alert.alert(
-      "Confirm Delete",
-      "Are you sure you want to delete this category?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-        },
-        {
-          text: "Delete",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              const categoryID = parseToInt(id);
-              await deleteCategory(categoryID);
-              router.back(); // Navigate back after deletion
-            } catch (error) {
-              console.error("Failed to delete category:", error);
-              alert("Failed to delete category");
-            }
-          },
-        },
-      ]
-    );
-  };
 
   const handleSubmit = async () => {
     if (!name || name.trim() === "") {
@@ -84,24 +48,15 @@ const EditCategoryForm = () => {
       return;
     }
 
-    let categoryID: number;
-    try {
-      categoryID = parseToInt(id);
-    } catch (error) {
-      alert("Invalid category ID");
-      return;
-    }
-
     try {
       const categoryData = {
-        id: categoryID,
         name,
         type: category,
         color: iconColor,
         icon: selectedIcon,
       };
 
-      await updateCategory(categoryData);
+      await addCategory(categoryData);
       router.back();
     } catch (error) {
       const errorMessage =
@@ -113,7 +68,7 @@ const EditCategoryForm = () => {
           "A category with this name and type already exists. Please choose a different name or type."
         );
       } else {
-        alert("Failed to update category. Please try again.");
+        alert("Failed to add category. Please try again.");
       }
     }
   };
@@ -189,9 +144,9 @@ const EditCategoryForm = () => {
         </View>
       </View>
       <View className="flex flex-row gap-4 self-end">
-        {/* Delete Button */}
-        <TouchableOpacity onPress={handleDelete} className=" mt-4">
-          <IconCircle icon={"delete"} color={"red"} type="square" />
+        {/* Cancel Button */}
+        <TouchableOpacity onPress={router.back} className=" mt-4">
+          <IconCircle icon={"close"} color={"gray"} type="square" />
         </TouchableOpacity>
         {/* Submit Button */}
         <TouchableOpacity onPress={handleSubmit} className="mt-4">
@@ -202,22 +157,4 @@ const EditCategoryForm = () => {
   );
 };
 
-export default EditCategoryForm;
-
-function parseToInt(value: string | string[]): number {
-  let strValue: string;
-
-  if (Array.isArray(value)) {
-    strValue = value[0];
-  } else {
-    strValue = value;
-  }
-
-  const parsed = parseInt(strValue, 10);
-
-  if (isNaN(parsed)) {
-    throw new Error("Invalid id parameter");
-  }
-
-  return parsed;
-}
+export default AddCategoryForm;
