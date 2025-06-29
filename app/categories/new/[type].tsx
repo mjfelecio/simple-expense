@@ -5,23 +5,31 @@ import IconPickerModal from "@/components/ui/IconPickerModal";
 import { DEFAULT_ICON, DEFAULT_ICON_COLOR } from "@/constants/Defaults";
 import { useAppDB } from "@/database/db";
 import { CategoryType, IconName } from "@/shared.types";
-import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import React, { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const AddCategoryForm = () => {
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: "Add Category",
+    });
+  }, [navigation]);
+
   const { addCategory } = useAppDB();
   const { type } = useLocalSearchParams();
 
   // Aborts navigation if the type is invalid
   if (type !== "expense" && type !== "income") {
-	alert("Invalid category type");
-	router.back();
+    alert("Invalid category type");
+    router.back();
   }
 
   // Parses the type param into the valid category types
-  const initialCategory = type === "expense" ? "expense" : "income"
+  const initialCategory = type === "expense" ? "expense" : "income";
 
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isIconModalVisible, setIsIconModalVisible] = useState(false);
@@ -59,9 +67,7 @@ const AddCategoryForm = () => {
   return (
     <SafeAreaView className="flex-1 p-6">
       {/*=== Header ===*/}
-      <Text className="text-white text-3xl font-semibold">
-        Add Category
-      </Text>
+      <Text className="text-white text-3xl font-semibold">Add Category</Text>
 
       {/*=== Form === */}
       <View className="pt-6 gap-2">
