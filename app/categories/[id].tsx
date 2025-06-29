@@ -8,9 +8,8 @@ import { Category, CategoryType, IconName } from "@/shared.types";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 
-const CategoryForm = () => {
+const EditCategoryForm = () => {
   const { getCategory, updateCategory } = useAppDB();
   const { id } = useLocalSearchParams();
 
@@ -87,7 +86,7 @@ const CategoryForm = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 p-6">
+    <View className="flex-1 px-6">
       {/*=== Form === */}
       <View className="pt-6 gap-2">
         {/* Name */}
@@ -166,11 +165,11 @@ const CategoryForm = () => {
           <IconCircle icon={"save"} color={"gray"} type="square" />
         </TouchableOpacity>
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 
-export default CategoryForm;
+export default EditCategoryForm;
 
 function parseToInt(value: string | string[]): number {
   let strValue: string;
