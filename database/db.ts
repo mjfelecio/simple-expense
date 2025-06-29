@@ -40,9 +40,20 @@ export const useAppDB = () => {
     return result;
   };
 
+  const getAllIncomeCategories = async (): Promise<Category[]> => {
+    await init();
+
+    const result = await db.getAllAsync<Category>(
+      "SELECT * FROM categories WHERE type = ?",
+      "income"
+    );
+    return result;
+  };
+
   return {
     init,
     addCategory,
     getAllExpenseCategories,
+    getAllIncomeCategories,
   };
 };
