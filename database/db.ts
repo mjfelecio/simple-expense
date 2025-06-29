@@ -16,7 +16,9 @@ export const useAppDB = () => {
     `);
   };
 
-  const addCategory = async (category: Category) => {
+  type NewCategory = Omit<Category, "id">;
+
+  const addCategory = async (category: NewCategory) => {
     const { name, type, color, icon } = category;
 
     await init();
