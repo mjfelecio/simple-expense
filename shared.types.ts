@@ -12,6 +12,7 @@ export type Record = {
 };
 
 export type Category = {
+  id?: number;
   name: string;
   type: CategoryTypes;
   color: string;
