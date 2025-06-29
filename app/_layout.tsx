@@ -25,14 +25,23 @@ export default function RootLayout() {
 
   return (
     <SQLiteProvider databaseName="app.db">
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="categories/[id]" options={{ title: "Edit Category", headerShown: true }} />
-        <Stack.Screen name="+not-found" />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="categories/[id]"
+            options={{
+              title: "Edit Category",
+              headerTitleStyle: {
+                fontSize: 26
+              },
+              headerShown: true,
+            }}
+          />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+        <StatusBar style="auto" />
+      </ThemeProvider>
     </SQLiteProvider>
   );
 }

@@ -15,6 +15,9 @@ const AddCategoryForm = () => {
   useEffect(() => {
     navigation.setOptions({
       title: "Add Category",
+      headerTitleStyle: {
+        fontSize: 24,
+      },
     });
   }, [navigation]);
 
