@@ -4,7 +4,7 @@ import IconCircle from "@/components/ui/IconCircle";
 import IconPickerModal from "@/components/ui/IconPickerModal";
 import { DEFAULT_ICON, DEFAULT_ICON_COLOR } from "@/constants/Defaults";
 import { useAppDB } from "@/database/db";
-import { CategoryTypes, IconName } from "@/shared.types";
+import { CategoryType, IconName } from "@/shared.types";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -28,7 +28,7 @@ const AddCategoryForm = () => {
 
   // Form States
   const [name, setName] = useState<string | undefined>();
-  const [category, setCategory] = useState<CategoryTypes>(initialCategory);
+  const [category, setCategory] = useState<CategoryType>(initialCategory);
   const [iconColor, setIconColor] = useState<string>(DEFAULT_ICON_COLOR);
   const [selectedIcon, setSelectedIcon] = useState<IconName>(DEFAULT_ICON);
 

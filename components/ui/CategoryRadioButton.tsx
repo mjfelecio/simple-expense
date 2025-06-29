@@ -1,4 +1,4 @@
-import { CategoryTypes } from "@/shared.types";
+import { CategoryType } from "@/shared.types";
 import React, { useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 import RadioGroup, { RadioButtonProps } from "react-native-radio-buttons-group";
@@ -7,8 +7,8 @@ const CategoryRadioButton = ({
   onSelect,
   initialValue
 }: {
-  onSelect: (value: CategoryTypes) => void;
-  initialValue: CategoryTypes;
+  onSelect: (value: CategoryType) => void;
+  initialValue: CategoryType;
 }) => {
   const [selectedId, setSelectedId] = useState<string | undefined>(initialValue);
 
@@ -32,7 +32,7 @@ const CategoryRadioButton = ({
     [selectedId]
   );
 
-  function isCategory(value: string): value is CategoryTypes {
+  function isCategory(value: string): value is CategoryType {
     return ["expense", "income"].includes(value);
   }
 
