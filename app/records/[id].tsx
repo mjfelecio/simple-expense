@@ -2,11 +2,11 @@ import CategoryRadioButton from "@/components/ui/CategoryRadioButton";
 import CategorySelection from "@/components/ui/CategorySelection";
 import IconCircle from "@/components/ui/IconCircle";
 import { useAppDB } from "@/database/db";
-import { CategoryType } from "@/shared.types";
+import { CategoryType, RealRecord } from "@/shared.types";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
@@ -21,7 +21,10 @@ const RecordForm = () => {
   const [amount, setAmount] = useState<string>("");
   const [categoryType, setCategoryType] = useState<CategoryType>("expense");
   const [category, setCategory] = useState<string>("");
-  const [categoryId, setCategoryId] = useState<number>();
+
+  // 0 as the default value to make Typescript shut up about undefined
+  // categoryId wont ever be invalid anyways. I think...
+  const [categoryId, setCategoryId] = useState<number>(0);
 
   const [isDatePickerOpen, setIsDatePickerOpen] = useState<boolean>(false);
   const [rawDate, setRawDate] = useState(new Date());
@@ -47,30 +50,37 @@ const RecordForm = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("==> Submitted <==");
-    console.log("Name: " + name);
-    console.log("Amount: " + amount);
-    console.log("Date: " + formattedDate);
-    console.log("Category: " + category);
-    console.log("Category ID: " + categoryId);
-    // if (!name || name.trim() === "") {
-    //   alert("Name must be present");
-    //   return;
-    // }
+    // TODO: Move this validation to another function
+    if (!name || name.trim() === "") {
+      alert("Name must be present");
+      return;
+    }
 
-    // try {
-    //   const recordData: Omit<RealRecord, "id"> = {
-    //     name,
-    //     amount: Number(amount),
-    //     date: rawDate,
-    //     category_id: 1,
-    //   };
+    const numericAmount = Number(amount);
+    if (!amount || isNaN(numericAmount) || numericAmount <= 0) {
+      alert("Amount must be a valid number greater than 0");
+      return;
+    }
 
-    //   await addRecord(recordData);
-    //   router.back();
-    // } catch (error) {
-    //   alert("Failed to add category. Please try again.");
-    // }
+    if (!category || categoryId === 0) {
+      alert("Please select a valid category");
+      return;
+    }
+
+    try {
+      const recordData: Omit<RealRecord, "id"> = {
+        name: name.trim(),
+        amount: numericAmount,
+        date: rawDate,
+        category_id: categoryId,
+      };
+
+      await addRecord(recordData);
+      router.back();
+    } catch (error) {
+      alert("Failed to add record. Please try again.");
+      console.error(error);
+    }
   };
 
   return (
@@ -133,10 +143,9 @@ const RecordForm = () => {
         <CategorySelection
           categoryType={categoryType}
           onSelect={(selectedCategory, category_id) => {
-              setCategory(selectedCategory);
-              setCategoryId(category_id)
-            }
-          }
+            setCategory(selectedCategory);
+            setCategoryId(category_id);
+          }}
         />
       </View>
 
