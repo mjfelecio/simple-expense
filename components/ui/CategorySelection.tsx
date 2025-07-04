@@ -2,7 +2,7 @@ import { useAppDB } from "@/database/db";
 import { CategoryType } from "@/shared.types";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet } from "react-native";
 import { SelectList } from "react-native-dropdown-select-list";
 
 type Props = {
@@ -43,22 +43,20 @@ const CategorySelection = ({ categoryType = "expense", onSelect }: Props) => {
   }, [categoryType]);
 
   return (
-    <View className="flex-1">
-      <SelectList
-        dropdownTextStyles={styles.dropdownText}
-        dropdownStyles={styles.dropdown}
-        inputStyles={styles.input}
-        boxStyles={styles.box}
-        setSelected={(val: string) => onSelect(val)}
-        data={categories as any[]} // We cast this into any[] because this library uses js
-        search={false}
-        placeholder={`Select an ${categoryType === "expense" ? "expense" : "income"} category`}
-        save="value"
-        arrowicon={
-          <MaterialIcons name="keyboard-arrow-down" size={24} color={"white"} />
-        }
-      />
-    </View>
+    <SelectList
+      dropdownTextStyles={styles.dropdownText}
+      dropdownStyles={styles.dropdown}
+      inputStyles={styles.input}
+      boxStyles={styles.box}
+      setSelected={(val: string) => onSelect(val)}
+      data={categories as any[]} // We cast this into any[] because this library uses js
+      search={false}
+      placeholder={`Select an ${categoryType === "expense" ? "expense" : "income"} category`}
+      save="value"
+      arrowicon={
+        <MaterialIcons name="keyboard-arrow-down" size={24} color={"white"} />
+      }
+    />
   );
 };
 
