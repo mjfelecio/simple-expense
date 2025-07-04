@@ -66,6 +66,8 @@ const styles = StyleSheet.create({
   },
   input: {
     color: "white",
+    fontSize: 16,
+    fontWeight: "500",
   },
   dropdown: {
     backgroundColor: "black",
@@ -73,6 +75,8 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     color: "white",
+    fontSize: 16,
+    fontWeight: "500",
   },
 });
 
