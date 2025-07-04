@@ -82,7 +82,7 @@ const RecordForm = () => {
           onPress={() => setIsDatePickerOpen(true)}
           className="text-xl p-2 text-white border-b-2 border-white"
         >
-          <Text className="text-white text-2xl font-semibold">
+          <Text className="text-white text-xl font-semibold">
             {formattedDate}
           </Text>
         </TouchableOpacity>
