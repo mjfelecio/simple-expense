@@ -7,7 +7,7 @@ import { SelectList } from "react-native-dropdown-select-list";
 
 type Props = {
   categoryType: CategoryType;
-  onSelect: (selectedCategory: string) => void;
+  onSelect: (selectedCategory: string, category_id: number) => void;
 };
 
 type SelectionDataProps = {
@@ -17,7 +17,7 @@ type SelectionDataProps = {
 
 const CategorySelection = ({ categoryType = "expense", onSelect }: Props) => {
   const { getAllCategories } = useAppDB();
-  const [categories, setCategories] = useState<SelectionDataProps[]>();
+  const [categories, setCategories] = useState<SelectionDataProps[]>([]);
 
   const fetchCategory = async (categoryType: CategoryType) => {
     try {
@@ -35,6 +35,22 @@ const CategorySelection = ({ categoryType = "expense", onSelect }: Props) => {
     }
   };
 
+  const handleSubmit = (selectedCategory: string) => {
+    try {
+      const selectedCategoryPair = categories.find(
+        (obj) => obj.value === selectedCategory
+      );
+
+      if (!selectedCategoryPair)
+        throw new Error("Invalid selection: No category id found");
+
+      const category_id = selectedCategoryPair.key;
+      onSelect(selectedCategory, category_id);
+    } catch (error) {
+      alert(error);
+    }
+  };
+
   useEffect(() => {
     fetchCategory(categoryType);
   }, [categoryType]);
@@ -45,7 +61,7 @@ const CategorySelection = ({ categoryType = "expense", onSelect }: Props) => {
       dropdownStyles={styles.dropdown}
       inputStyles={styles.input}
       boxStyles={styles.box}
-      setSelected={(val: string) => onSelect(val)}
+      setSelected={handleSubmit}
       data={categories as any[]} // We cast this into any[] because this library uses js
       search={false}
       placeholder={`Select an ${categoryType === "expense" ? "expense" : "income"} category`}
