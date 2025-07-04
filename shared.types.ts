@@ -16,7 +16,7 @@ export type RealRecord = {
   id: number;
   name: string;
   amount: number;
-  date: string;
+  date: Date;
   category_id: number;
 }
 
