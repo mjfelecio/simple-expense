@@ -1,4 +1,4 @@
-import { Category, CategoryType } from "@/shared.types";
+import { Category, CategoryType, RealRecord } from "@/shared.types";
 import { useSQLiteContext } from "expo-sqlite";
 
 export const useAppDB = () => {
@@ -13,6 +13,16 @@ export const useAppDB = () => {
         color TEXT NOT NULL,
         icon TEXT NOT NULL,
         UNIQUE(name, type)
+      );
+    `);
+
+    await db.execAsync(`
+      CREATE TABLE IF NOT EXISTS records (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        amount INTEGER NOT NULL,
+        date TEXT NOT NULL,
+        category_id INTEGER NOT NULL
       );
     `);
   };
@@ -77,12 +87,30 @@ export const useAppDB = () => {
     return result;
   };
 
+  // ==> Record Functions <==
+
+  type NewRecord = Omit<RealRecord, "id">;
+  const addRecord = async (record: NewRecord) => {
+    const { name, amount, date, category_id } = record;
+
+    await init();
+
+    return await db.runAsync(
+      "INSERT INTO records (name, amount, date, category_id) VALUES (?, ?, ?, ?)",
+      name,
+      amount,
+      date,
+      category_id
+    );
+  };
+
   return {
-    init,
     addCategory,
     getAllCategories,
     updateCategory,
     getCategory,
-    deleteCategory
+    deleteCategory,
+
+    addRecord,
   };
 };
