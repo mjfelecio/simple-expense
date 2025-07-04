@@ -38,6 +38,16 @@ export default function RootLayout() {
               headerShown: true,
             }}
           />
+          <Stack.Screen
+            name="records/[id]"
+            options={{
+              title: "Edit Record",
+              headerTitleStyle: {
+                fontSize: 26
+              },
+              headerShown: true,
+            }}
+          />
           <Stack.Screen name="+not-found" />
         </Stack>
         <StatusBar style="auto" />
