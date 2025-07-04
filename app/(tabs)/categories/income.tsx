@@ -8,7 +8,7 @@ import { ScrollView, TouchableHighlight, View } from "react-native";
 
 export default function IncomeCategoriesTab() {
   const [categories, setCategories] = useState<Category[] | undefined>();
-  const { getAllIncomeCategories } = useAppDB();
+  const { getAllCategories } = useAppDB();
 
   useFocusEffect(
     useCallback(() => {
@@ -18,7 +18,7 @@ export default function IncomeCategoriesTab() {
 
   const loadIncomeCategories = async () => {
     try {
-      const result = await getAllIncomeCategories();
+      const result = await getAllCategories("income");
       setCategories(result);
     } catch (error) {
       console.error("Failed to load categories:", error);

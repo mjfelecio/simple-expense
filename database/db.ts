@@ -1,4 +1,4 @@
-import { Category } from "@/shared.types";
+import { Category, CategoryType } from "@/shared.types";
 import { useSQLiteContext } from "expo-sqlite";
 
 export const useAppDB = () => {
@@ -67,22 +67,12 @@ export const useAppDB = () => {
     return await db.runAsync("DELETE FROM categories WHERE id = ?", id);
   };
 
-  const getAllExpenseCategories = async (): Promise<Category[]> => {
+  const getAllCategories = async (type: CategoryType): Promise<Category[]> => {
     await init();
 
     const result = await db.getAllAsync<Category>(
       "SELECT * FROM categories WHERE type = ?",
-      "expense"
-    );
-    return result;
-  };
-
-  const getAllIncomeCategories = async (): Promise<Category[]> => {
-    await init();
-
-    const result = await db.getAllAsync<Category>(
-      "SELECT * FROM categories WHERE type = ?",
-      "income"
+      type
     );
     return result;
   };
@@ -90,8 +80,7 @@ export const useAppDB = () => {
   return {
     init,
     addCategory,
-    getAllExpenseCategories,
-    getAllIncomeCategories,
+    getAllCategories,
     updateCategory,
     getCategory,
     deleteCategory

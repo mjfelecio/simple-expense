@@ -16,15 +16,12 @@ type SelectionDataProps = {
 };
 
 const CategorySelection = ({ categoryType = "expense", onSelect }: Props) => {
-  const { getAllExpenseCategories, getAllIncomeCategories } = useAppDB();
+  const { getAllCategories } = useAppDB();
   const [categories, setCategories] = useState<SelectionDataProps[]>();
 
   const fetchCategory = async (categoryType: CategoryType) => {
     try {
-      const result =
-        categoryType === "expense"
-          ? await getAllExpenseCategories()
-          : await getAllIncomeCategories();
+      const result = await getAllCategories(categoryType);
 
       // We map into only the information needed by the dropdown
       const transformedData = result?.map((category) => ({

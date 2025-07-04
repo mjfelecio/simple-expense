@@ -8,7 +8,7 @@ import { ScrollView, TouchableHighlight, View } from "react-native";
 
 export default function ExpenseCategoriesTab() {
   const [categories, setCategories] = useState<Category[] | undefined>();
-  const { getAllExpenseCategories } = useAppDB();
+  const { getAllCategories } = useAppDB();
 
   useFocusEffect(
     useCallback(() => {
@@ -18,7 +18,7 @@ export default function ExpenseCategoriesTab() {
 
   const loadExpenseCategories = async () => {
     try {
-      const result = await getAllExpenseCategories();
+      const result = await getAllCategories("expense");
       setCategories(result);
     } catch (error) {
       console.error("Failed to load categories:", error);
