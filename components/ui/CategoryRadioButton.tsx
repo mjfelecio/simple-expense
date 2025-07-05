@@ -1,5 +1,5 @@
 import { CategoryType } from "@/shared.types";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { StyleSheet } from "react-native";
 import RadioGroup, { RadioButtonProps } from "react-native-radio-buttons-group";
 
@@ -42,6 +42,10 @@ const CategoryRadioButton = ({
       onSelect(value);
     }
   };
+
+  useEffect(() => {
+    setSelectedId(initialValue)
+  }, [initialValue])
 
   return (
     <RadioGroup

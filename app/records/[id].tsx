@@ -72,7 +72,7 @@ const RecordForm = () => {
         await addRecord(recordData);
       } else {
         const recordData: RealRecord = {
-          id: 1,
+          id: Number(id),
           name: name.trim(),
           amount: numericAmount,
           date: rawDate.toDateString(),
@@ -106,7 +106,10 @@ const RecordForm = () => {
       setName(result.name);
       setAmount(String(result.amount));
       setRawDate(new Date(result.date));
+      setFormattedDate(formatDate(new Date(result.date)));
       setCategoryType(resultCategory.type);
+      setCategory(resultCategory.name);
+      setCategoryId(result.category_id);
     } catch (error) {
       console.error(error);
       alert("Fetching record data failed");
@@ -115,10 +118,9 @@ const RecordForm = () => {
 
   useEffect(() => {
     if (!isCreatingRecord) {
-      const recordId = Number(id);
-      fetchRecordData(recordId);
+      fetchRecordData(Number(id));
     }
-  }, []);
+  }, [id, isCreatingRecord]);
 
   return (
     <View className="flex-1 px-6 pt-10 gap-6">
@@ -169,7 +171,7 @@ const RecordForm = () => {
       <View className="gap-2">
         <Text className="text-white text-2xl font-semibold">Type</Text>
         <CategoryRadioButton
-          initialValue="expense"
+          initialValue={categoryType}
           onSelect={(selectedType) => setCategoryType(selectedType)}
         />
       </View>
@@ -178,6 +180,7 @@ const RecordForm = () => {
       <View className="gap-2">
         <Text className="text-white text-2xl font-semibold">Category</Text>
         <CategorySelection
+          selectedCategory={category}
           categoryType={categoryType}
           onSelect={(selectedCategory, category_id) => {
             setCategory(selectedCategory);
