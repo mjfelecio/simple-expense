@@ -1,12 +1,13 @@
 import { useAppDB } from "@/database/db";
 import { IconName, RealRecord } from "@/shared.types";
+import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, TouchableHighlight, View } from "react-native";
 import IconCircle from "./IconCircle";
 
 type Props = {
   record: RealRecord;
-}
+};
 
 const RecordCard = ({ record }: Props) => {
   const { getCategory } = useAppDB();
@@ -39,19 +40,23 @@ const RecordCard = ({ record }: Props) => {
   const sign = categoryType === "expense" ? "-" : "";
 
   return (
-    <TouchableHighlight>
-      <View className="flex flex-row items-center gap-4 p-4">
-        <IconCircle
-          icon={categoryIcon}
-          color={categoryColor}
-          iconSize={26}
-          circleSize={38}
-        />
-        <Text className="text-white text-xl font-medium">{record.name}</Text>
-        <View className="flex-1"></View>
-        <Text className="text-white text-xl font-medium">{sign + record.amount}</Text>
-      </View>
-    </TouchableHighlight>
+    <Link href={`/records/${record.id}`} asChild>
+      <TouchableHighlight>
+        <View className="flex flex-row items-center gap-4 p-4">
+          <IconCircle
+            icon={categoryIcon}
+            color={categoryColor}
+            iconSize={26}
+            circleSize={38}
+          />
+          <Text className="text-white text-xl font-medium">{record.name}</Text>
+          <View className="flex-1"></View>
+          <Text className="text-white text-xl font-medium">
+            {sign + record.amount}
+          </Text>
+        </View>
+      </TouchableHighlight>
+    </Link>
   );
 };
 
