@@ -30,14 +30,6 @@ const RecordForm = () => {
   const [rawDate, setRawDate] = useState(new Date());
   const [formattedDate, setFormattedDate] = useState(formatDate(new Date()));
 
-  function formatDate(date: Date) {
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-    });
-  }
-
   const handleDatePicker = (
     event: DateTimePickerEvent,
     selectedDate?: Date
@@ -71,7 +63,7 @@ const RecordForm = () => {
       const recordData: Omit<RealRecord, "id"> = {
         name: name.trim(),
         amount: numericAmount,
-        date: rawDate,
+        date: rawDate.toDateString(),
         category_id: categoryId,
       };
 
@@ -161,3 +153,11 @@ const RecordForm = () => {
 };
 
 export default RecordForm;
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "2-digit",
+  });
+}
