@@ -1,5 +1,6 @@
-import { Category, CategoryType, Record } from "@/shared.types";
+import { Category, CategoryType, Record, RecordGroup } from "@/shared.types";
 import { useSQLiteContext } from "expo-sqlite";
+import { groupBy } from "lodash";
 
 export const useAppDB = () => {
   const db = useSQLiteContext();
@@ -144,6 +145,26 @@ export const useAppDB = () => {
     return await db.getAllAsync<Record>("SELECT * FROM records");
   };
 
+
+const getAllRecordsGroupedByDate = async (): Promise<RecordGroup[]> => {
+  await init();
+
+  const allRecords = await db.getAllAsync<Record>("SELECT * FROM records");
+
+  // Using lodash's groupBy instead of Object.groupBy cause it doesn't work here
+  const groupedObj = groupBy(allRecords, "date");
+
+  const recordGroups: RecordGroup[] = Object.entries(groupedObj).map(
+    ([date, records]) => ({
+      date,
+      records: records ?? [],
+    })
+  );
+
+  return recordGroups;
+};
+
+
   return {
     addCategory,
     getAllCategories,
@@ -156,5 +177,6 @@ export const useAppDB = () => {
     deleteRecord,
     getRecord,
     getAllRecords,
+    getAllRecordsGroupedByDate,
   };
 };
