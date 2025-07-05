@@ -1,27 +1,27 @@
 import IconCircle from "@/components/ui/IconCircle";
 import OverviewCard from "@/components/ui/OverviewCard";
-import RecordCard from "@/components/ui/RecordCard";
+import RecordGroupCard from "@/components/ui/RecordGroupCard";
 import { useAppDB } from "@/database/db";
-import { Record } from "@/shared.types";
+import { RecordGroup } from "@/shared.types";
 import { Link, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-  const { getAllRecords } = useAppDB();
+  const { getAllRecordsGroupedByDate } = useAppDB();
 
-  const [records, setRecords] = useState<Record[]>();
+  const [recordsGroupedByDate, setRecordsGroupedByDate] = useState<RecordGroup[]>();
 
   const fetchRecords = async () => {
     try {
-      const result = await getAllRecords();
+      const result = await getAllRecordsGroupedByDate();
 
       if (!result) {
         throw new Error("Failed to fetch records");
       }
 
-      setRecords(result);
+      setRecordsGroupedByDate(result);
     } catch (error) {
       console.error(error);
       alert("Failed to fetch records");
@@ -33,7 +33,7 @@ export default function HomeScreen() {
       fetchRecords();
     }, [])
   );
-
+  
   return (
     <SafeAreaView className="flex-1">
       <View className="border-b-2 border-white py-2">
@@ -41,9 +41,10 @@ export default function HomeScreen() {
       </View>
       <OverviewCard />
       <ScrollView>
-        {records?.map((record) => (
-          <RecordCard key={record.id} record={record} />
+        {recordsGroupedByDate?.map((recordGroup) => (
+          <RecordGroupCard key={recordGroup.date} data={recordGroup} />
         ))}
+        
       </ScrollView>
       <Link href={"/records/new"} asChild>
         <TouchableOpacity className="absolute bottom-10 right-10">
