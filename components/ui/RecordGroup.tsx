@@ -1,7 +1,14 @@
-import { Record } from "@/shared.types";
+import { CategoryType, IconName } from "@/shared.types";
 import React from "react";
 import { Text, View } from "react-native";
-import RecordCard from "./RecordCard";
+
+ type Record = {
+    icon: IconName;
+    iconColor: string;
+    name: string;
+    value: number;
+    type: CategoryType;
+}
 
 const records: Record[] = [
   {
@@ -40,7 +47,7 @@ const RecordGroup = () => {
           {groupBalance}
         </Text>
       </View>
-      {records.map((record, index) => (
+      {/* {records.map((record, index) => (
         <RecordCard
           key={index}
           icon={record.icon}
@@ -49,7 +56,7 @@ const RecordGroup = () => {
           value={record.value}
           type={record.type}
         />
-      ))}
+      ))} */}
     </View>
   );
 };
