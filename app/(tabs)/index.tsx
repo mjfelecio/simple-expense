@@ -3,8 +3,8 @@ import OverviewCard from "@/components/ui/OverviewCard";
 import RecordCard from "@/components/ui/RecordCard";
 import { useAppDB } from "@/database/db";
 import { RealRecord } from "@/shared.types";
-import { Link } from "expo-router";
-import { useEffect, useState } from "react";
+import { Link, useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -28,9 +28,11 @@ export default function HomeScreen() {
     }
   };
 
-  useEffect(() => {
-    fetchRecords();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchRecords();
+    }, [])
+  );
 
   return (
     <SafeAreaView className="flex-1">
