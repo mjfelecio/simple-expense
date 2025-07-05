@@ -114,7 +114,7 @@ export const useAppDB = () => {
     await init();
 
     return await db.runAsync(
-      "UPDATE records SET name = ?, type = ?, color = ?, icon = ? WHERE id = ?",
+      "UPDATE records SET name = ?, amount = ?, date = ?, category_id = ? WHERE id = ?",
       name,
       amount,
       date,
