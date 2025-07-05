@@ -35,7 +35,7 @@ const RecordCard = ({ record }: Props) => {
 
   useEffect(() => {
     fetchCategoryDetails(record.category_id);
-  }, []);
+  }, [record.category_id]);
 
   const sign = categoryType === "expense" ? "-" : "";
 
@@ -52,7 +52,7 @@ const RecordCard = ({ record }: Props) => {
           <Text className="text-white text-xl font-medium">{record.name}</Text>
           <View className="flex-1"></View>
           <Text className="text-white text-xl font-medium">
-            {sign + record.amount}
+            {`${sign} ${record.amount}`}
           </Text>
         </View>
       </TouchableHighlight>
