@@ -7,16 +7,16 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { router, useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const RecordForm = () => {
   const { id } = useLocalSearchParams();
-
-  const { addRecord } = useAppDB();
+  const { addRecord, updateRecord, getRecord, getCategory } = useAppDB();
 
   const isCreatingRecord: boolean = id === "new";
 
+  // Forms states
   const [name, setName] = useState<string>("");
   const [amount, setAmount] = useState<string>("");
   const [categoryType, setCategoryType] = useState<CategoryType>("expense");
@@ -60,20 +60,65 @@ const RecordForm = () => {
     }
 
     try {
-      const recordData: Omit<RealRecord, "id"> = {
-        name: name.trim(),
-        amount: numericAmount,
-        date: rawDate.toDateString(),
-        category_id: categoryId,
-      };
+      if (isCreatingRecord) {
+        // We omit the id because it isn't populated yet
+        const recordData: Omit<RealRecord, "id"> = {
+          name: name.trim(),
+          amount: numericAmount,
+          date: rawDate.toDateString(),
+          category_id: categoryId,
+        };
 
-      await addRecord(recordData);
+        await addRecord(recordData);
+      } else {
+        const recordData: RealRecord = {
+          id: 1,
+          name: name.trim(),
+          amount: numericAmount,
+          date: rawDate.toDateString(),
+          category_id: categoryId,
+        };
+
+        await updateRecord(recordData);
+      }
+
       router.back();
     } catch (error) {
       alert("Failed to add record. Please try again.");
       console.error(error);
     }
   };
+
+  const fetchRecordData = async (recordId: number) => {
+    try {
+      const result = await getRecord(recordId);
+
+      if (!result) {
+        throw new Error("Failed in fetching record data");
+      }
+
+      const resultCategory = await getCategory(result.category_id);
+
+      if (!resultCategory) {
+        throw new Error("Failed in fetching category of record");
+      }
+
+      setName(result.name);
+      setAmount(String(result.amount));
+      setRawDate(new Date(result.date));
+      setCategoryType(resultCategory.type);
+    } catch (error) {
+      console.error(error);
+      alert("Fetching record data failed");
+    }
+  };
+
+  useEffect(() => {
+    if (!isCreatingRecord) {
+      const recordId = Number(id);
+      fetchRecordData(recordId);
+    }
+  }, []);
 
   return (
     <View className="flex-1 px-6 pt-10 gap-6">
