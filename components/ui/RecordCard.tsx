@@ -1,16 +1,14 @@
 import { useAppDB } from "@/database/db";
-import { IconName } from "@/shared.types";
+import { IconName, RealRecord } from "@/shared.types";
 import React, { useEffect, useState } from "react";
 import { Text, TouchableHighlight, View } from "react-native";
 import IconCircle from "./IconCircle";
 
 type Props = {
-  name: string;
-  amount: number;
-  category_id: number;
+  record: RealRecord;
 }
 
-const RecordCard = ({ name, amount, category_id }: Props) => {
+const RecordCard = ({ record }: Props) => {
   const { getCategory } = useAppDB();
 
   const [categoryIcon, setCategoryIcon] = useState<IconName>("question-mark");
@@ -30,18 +28,18 @@ const RecordCard = ({ name, amount, category_id }: Props) => {
       setCategoryType(result.type);
     } catch (error) {
       console.error(error);
-      alert(`Failed to fetch category details for ${name} record`);
+      alert(`Failed to fetch category details for ${record.name} record`);
     }
   };
 
   useEffect(() => {
-    fetchCategoryDetails(category_id);
+    fetchCategoryDetails(record.category_id);
   }, []);
 
   const sign = categoryType === "expense" ? "-" : "";
 
   return (
-    <TouchableHighlight onPress={() => alert(`Clicked ${name} record`)}>
+    <TouchableHighlight>
       <View className="flex flex-row items-center gap-4 p-4">
         <IconCircle
           icon={categoryIcon}
@@ -49,9 +47,9 @@ const RecordCard = ({ name, amount, category_id }: Props) => {
           iconSize={26}
           circleSize={38}
         />
-        <Text className="text-white text-xl font-medium">{name}</Text>
+        <Text className="text-white text-xl font-medium">{record.name}</Text>
         <View className="flex-1"></View>
-        <Text className="text-white text-xl font-medium">{sign + amount}</Text>
+        <Text className="text-white text-xl font-medium">{sign + record.amount}</Text>
       </View>
     </TouchableHighlight>
   );

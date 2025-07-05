@@ -40,12 +40,7 @@ export default function HomeScreen() {
       <OverviewCard />
       <ScrollView>
         {records?.map((record) => (
-          <RecordCard
-            key={record.id}
-            name={record.name}
-            amount={record.amount}
-            category_id={record.category_id}
-          />
+          <RecordCard key={record.id} record={record} />
         ))}
       </ScrollView>
       <Link href={"/records/new"} asChild>
