@@ -11,6 +11,11 @@ export type Record = {
   category_id: number;
 }
 
+export type RecordGroup = {
+  date: string;
+  records: Record[];
+};
+
 export type Category = {
   id: number;
   name: string;
