@@ -66,7 +66,7 @@ const RecordForm = () => {
         const recordData: Omit<RealRecord, "id"> = {
           name: name.trim(),
           amount: numericAmount,
-          date: rawDate.toDateString(),
+          date: rawDate.toISOString(),
           category_id: categoryId,
         };
 
@@ -76,7 +76,7 @@ const RecordForm = () => {
           id: Number(id),
           name: name.trim(),
           amount: numericAmount,
-          date: rawDate.toDateString(),
+          date: rawDate.toISOString(),
           category_id: categoryId,
         };
 
