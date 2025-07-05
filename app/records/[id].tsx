@@ -8,11 +8,12 @@ import DateTimePicker, {
 } from "@react-native-community/datetimepicker";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 const RecordForm = () => {
   const { id } = useLocalSearchParams();
-  const { addRecord, updateRecord, getRecord, getCategory } = useAppDB();
+  const { addRecord, updateRecord, deleteRecord, getRecord, getCategory } =
+    useAppDB();
 
   const isCreatingRecord: boolean = id === "new";
 
@@ -87,6 +88,33 @@ const RecordForm = () => {
       alert("Failed to add record. Please try again.");
       console.error(error);
     }
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      "Confirm Delete",
+      "Are you sure you want to delete this record?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        {
+          text: "Delete",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              const recordId = Number(id);
+              await deleteRecord(recordId);
+              router.back();
+            } catch (error) {
+              console.error("Failed to delete record:", error);
+              alert("Failed to delete record");
+            }
+          },
+        },
+      ]
+    );
   };
 
   const fetchRecordData = async (recordId: number) => {
@@ -189,13 +217,18 @@ const RecordForm = () => {
         />
       </View>
 
-      {/* Submit Button */}
-      <TouchableOpacity
-        onPress={handleSubmit}
-        className="absolute bottom-20 right-10"
-      >
-        <IconCircle icon={"save"} color={"gray"} type="square" />
-      </TouchableOpacity>
+      <View className="flex flex-row gap-4 self-end absolute bottom-20 right-10">
+        {/* Delete Button */}
+        {!isCreatingRecord && (
+          <TouchableOpacity onPress={handleDelete}>
+            <IconCircle icon={"delete"} color={"red"} type="square" />
+          </TouchableOpacity>
+        )}
+        {/* Submit Button */}
+        <TouchableOpacity onPress={handleSubmit}>
+          <IconCircle icon={"save"} color={"gray"} type="square" />
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
