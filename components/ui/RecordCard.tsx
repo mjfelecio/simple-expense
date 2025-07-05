@@ -1,12 +1,12 @@
 import { useAppDB } from "@/database/db";
-import { IconName, RealRecord } from "@/shared.types";
+import { IconName, Record } from "@/shared.types";
 import { Link } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { Text, TouchableHighlight, View } from "react-native";
 import IconCircle from "./IconCircle";
 
 type Props = {
-  record: RealRecord;
+  record: Record;
 };
 
 const RecordCard = ({ record }: Props) => {

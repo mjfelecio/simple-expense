@@ -1,4 +1,4 @@
-import { Category, CategoryType, RealRecord } from "@/shared.types";
+import { Category, CategoryType, Record } from "@/shared.types";
 import { useSQLiteContext } from "expo-sqlite";
 
 export const useAppDB = () => {
@@ -89,7 +89,7 @@ export const useAppDB = () => {
 
   // ==> Record Functions <==
 
-  type NewRecord = Omit<RealRecord, "id">;
+  type NewRecord = Omit<Record, "id">;
   const addRecord = async (record: NewRecord) => {
     const { name, amount, date, category_id } = record;
 
@@ -104,7 +104,7 @@ export const useAppDB = () => {
     );
   };
 
-  const updateRecord = async (record: RealRecord) => {
+  const updateRecord = async (record: Record) => {
     const { id, name, amount, date, category_id } = record;
 
     if (!id) {
@@ -129,19 +129,19 @@ export const useAppDB = () => {
     return await db.runAsync("DELETE FROM records WHERE id = ?", id);
   };
 
-  const getRecord = async (id: number): Promise<RealRecord | null> => {
+  const getRecord = async (id: number): Promise<Record | null> => {
     await init();
 
-    return await db.getFirstAsync<RealRecord>(
+    return await db.getFirstAsync<Record>(
       "SELECT * FROM records WHERE id = ?",
       id
     );
   };
 
-  const getAllRecords = async (): Promise<RealRecord[]> => {
+  const getAllRecords = async (): Promise<Record[]> => {
     await init();
 
-    return await db.getAllAsync<RealRecord>("SELECT * FROM records");
+    return await db.getAllAsync<Record>("SELECT * FROM records");
   };
 
   return {

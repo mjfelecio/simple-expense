@@ -2,7 +2,7 @@ import CategoryRadioButton from "@/components/ui/CategoryRadioButton";
 import CategorySelection from "@/components/ui/CategorySelection";
 import IconCircle from "@/components/ui/IconCircle";
 import { useAppDB } from "@/database/db";
-import { CategoryType, RealRecord } from "@/shared.types";
+import { CategoryType, Record } from "@/shared.types";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
@@ -63,7 +63,7 @@ const RecordForm = () => {
     try {
       if (isCreatingRecord) {
         // We omit the id because it isn't populated yet
-        const recordData: Omit<RealRecord, "id"> = {
+        const recordData: Omit<Record, "id"> = {
           name: name.trim(),
           amount: numericAmount,
           date: rawDate.toISOString(),
@@ -72,7 +72,7 @@ const RecordForm = () => {
 
         await addRecord(recordData);
       } else {
-        const recordData: RealRecord = {
+        const recordData: Record = {
           id: Number(id),
           name: name.trim(),
           amount: numericAmount,

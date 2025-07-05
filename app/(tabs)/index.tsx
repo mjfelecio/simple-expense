@@ -2,7 +2,7 @@ import IconCircle from "@/components/ui/IconCircle";
 import OverviewCard from "@/components/ui/OverviewCard";
 import RecordCard from "@/components/ui/RecordCard";
 import { useAppDB } from "@/database/db";
-import { RealRecord } from "@/shared.types";
+import { Record } from "@/shared.types";
 import { Link, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function HomeScreen() {
   const { getAllRecords } = useAppDB();
 
-  const [records, setRecords] = useState<RealRecord[]>();
+  const [records, setRecords] = useState<Record[]>();
 
   const fetchRecords = async () => {
     try {
