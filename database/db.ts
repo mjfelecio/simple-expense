@@ -104,6 +104,46 @@ export const useAppDB = () => {
     );
   };
 
+  const updateRecord = async (record: RealRecord) => {
+    const { id, name, amount, date, category_id } = record;
+
+    if (!id) {
+      throw new Error("Record id is required for update");
+    }
+
+    await init();
+
+    return await db.runAsync(
+      "UPDATE records SET name = ?, type = ?, color = ?, icon = ? WHERE id = ?",
+      name,
+      amount,
+      date,
+      category_id,
+      id
+    );
+  };
+
+  const deleteRecord = async (id: number) => {
+    await init();
+
+    return await db.runAsync("DELETE FROM records WHERE id = ?", id);
+  };
+
+  const getRecord = async (id: number): Promise<RealRecord | null> => {
+    await init();
+
+    return await db.getFirstAsync<RealRecord>(
+      "SELECT * FROM records WHERE id = ?",
+      id
+    );
+  };
+
+  const getAllRecords = async (): Promise<RealRecord[]> => {
+    await init();
+
+    return await db.getAllAsync<RealRecord>("SELECT * FROM records");
+  };
+
   return {
     addCategory,
     getAllCategories,
@@ -112,5 +152,9 @@ export const useAppDB = () => {
     deleteCategory,
 
     addRecord,
+    updateRecord,
+    deleteRecord,
+    getRecord,
+    getAllRecords,
   };
 };
