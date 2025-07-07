@@ -2,26 +2,29 @@ import IconCircle from "@/components/ui/IconCircle";
 import OverviewCard from "@/components/ui/OverviewCard";
 import RecordGroupCard from "@/components/ui/RecordGroupCard";
 import { useAppDB } from "@/database/db";
-import { RecordGroup } from "@/shared.types";
+import { Record, RecordGroup } from "@/shared.types";
 import { Link, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-  const { getAllRecordsGroupedByDate } = useAppDB();
+  const { getAllRecords, getAllRecordsGroupedByDate } = useAppDB();
 
-  const [recordsGroupedByDate, setRecordsGroupedByDate] = useState<RecordGroup[]>();
+  const [recordsGroupedByDate, setRecordsGroupedByDate] = useState<RecordGroup[]>([]);
+  const [allRecords, setAllRecords] = useState<Record[]>([]);
 
   const fetchRecords = async () => {
     try {
-      const result = await getAllRecordsGroupedByDate();
+      const records = await getAllRecords();
+      const groupedRecords = await getAllRecordsGroupedByDate();
 
-      if (!result) {
+      if (!groupedRecords || !records) {
         throw new Error("Failed to fetch records");
       }
 
-      setRecordsGroupedByDate(result);
+      setRecordsGroupedByDate(groupedRecords ?? []);
+      setAllRecords(records ?? []);
     } catch (error) {
       console.error(error);
       alert("Failed to fetch records");
@@ -33,18 +36,17 @@ export default function HomeScreen() {
       fetchRecords();
     }, [])
   );
-  
+
   return (
     <SafeAreaView className="flex-1">
       <View className="border-b-2 border-white py-2">
         <Text className="text-4xl font-bold text-white mx-4">June 2025</Text>
       </View>
-      <OverviewCard />
+      <OverviewCard records={allRecords} />
       <ScrollView>
-        {recordsGroupedByDate?.map((recordGroup) => (
+        {recordsGroupedByDate.map((recordGroup) => (
           <RecordGroupCard key={recordGroup.date} data={recordGroup} />
         ))}
-        
       </ScrollView>
       <Link href={"/records/new"} asChild>
         <TouchableOpacity className="absolute bottom-10 right-10">
