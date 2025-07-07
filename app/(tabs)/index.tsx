@@ -38,22 +38,31 @@ export default function HomeScreen() {
   );
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 mt-4">
       <View className="border-b-2 border-white py-2">
-        <Text className="text-4xl font-bold text-white mx-4">June 2025</Text>
+        <Text className="text-4xl font-bold text-white mx-4">
+          {new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+          })}
+        </Text>
       </View>
       <OverviewCard />
       <ScrollView>
-      { recordsGroupedByDate.length > 0 ? 
-        (recordsGroupedByDate.map((recordGroup) => (
-          <RecordGroupCard key={recordGroup.date} data={recordGroup} />
-        )))
-      : (
-        <View className="flex-1 justify-center items-center mt-32 gap-2">
-          <Text className="text-white text-4xl font-bold">No Records Yet</Text>
-          <Text className="text-blue-200 text-sm text-center">Click the plus button below to create a new record</Text>
-        </View>
-      )}
+        {recordsGroupedByDate.length > 0 ? (
+          recordsGroupedByDate.map((recordGroup) => (
+            <RecordGroupCard key={recordGroup.date} data={recordGroup} />
+          ))
+        ) : (
+          <View className="flex-1 justify-center items-center mt-32 gap-2">
+            <Text className="text-white text-4xl font-bold">
+              No Records Yet
+            </Text>
+            <Text className="text-blue-200 text-sm text-center">
+              Click the plus button below to create a new record
+            </Text>
+          </View>
+        )}
       </ScrollView>
       <Link href={"/records/new"} asChild>
         <TouchableOpacity className="absolute bottom-10 right-10">
