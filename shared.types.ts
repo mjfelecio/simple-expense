@@ -7,8 +7,9 @@ export type Record = {
   id: number;
   name: string;
   amount: number;
-  date: string;
+  date: string; // Stores the date the record is set
   category_id: number;
+  created_at: string; // Stores the creation of the record
 }
 
 export type RecordGroup = {
