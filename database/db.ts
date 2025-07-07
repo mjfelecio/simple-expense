@@ -23,7 +23,8 @@ export const useAppDB = () => {
         name TEXT NOT NULL,
         amount INTEGER NOT NULL,
         date TEXT NOT NULL,
-        category_id INTEGER NOT NULL
+        category_id INTEGER NOT NULL,
+        created_at TEXT NOT NULL,
       );
     `);
   };
