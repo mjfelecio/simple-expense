@@ -1,3 +1,4 @@
+import { useAppDB } from "@/database/db";
 import { Record } from "@/shared.types";
 import { useFocusEffect } from "expo-router";
 import React, { useCallback, useState } from "react";
@@ -17,27 +18,49 @@ const ItemCard = ({ name, value }: ItemCardProps) => {
   );
 };
 
-type OverviewCardProp = {
-  records: Record[];
-};
+const OverviewCard = () => {
+  const { getAllRecords } = useAppDB();
 
-const OverviewCard = ({ records }: OverviewCardProp) => {
   const [totalIncome, setTotalIncome] = useState("0");
   const [totalExpense, setTotalExpense] = useState("0");
   const [totalBalance, setTotalBalance] = useState("0");
 
+  const [records, setRecords] = useState<Record[]>([]);
+
+  const fetchRecords = async () => {
+    try { 
+      const result = await getAllRecords();
+
+      if (!result) {
+        throw new Error("Failed to fetch records to populate OverviewCard");
+      }
+
+      setRecords(result ?? []);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to fetch records to populate OverviewCard");
+    }
+  };
+
   const calculateValues = () => {
+    if (!records || records.length < 0) {
+      setTotalIncome("0");
+      setTotalExpense("0");
+      setTotalBalance("0");
+      return;
+    }
+
     // Note that we are just ignoring "0" amounts here, regardless of their category type
     // cause they don't really contribute anything
     const incomes = records
       .map((record) => record.amount)
       .filter((record) => record > 0)
-      .reduce((a, b) => a + b);
+      .reduce((a, b) => a + b, 0);
 
     const expenses = records
       .map((record) => record.amount)
       .filter((record) => record < 0)
-      .reduce((a, b) => a + b);
+      .reduce((a, b) => a + b, 0);
 
     // We are adding for the balance cause expenses is a negative value
     // (+) - (-) Becomes (+) + (+)
@@ -50,13 +73,14 @@ const OverviewCard = ({ records }: OverviewCardProp) => {
   };
 
   function addSeparators(number: number) {
-     return number.toLocaleString()
+    return number.toLocaleString();
   }
 
   useFocusEffect(
     useCallback(() => {
+      fetchRecords();
       calculateValues();
-    }, [])
+    }, [records, calculateValues])
   );
 
   return (

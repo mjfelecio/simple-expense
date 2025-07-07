@@ -2,29 +2,26 @@ import IconCircle from "@/components/ui/IconCircle";
 import OverviewCard from "@/components/ui/OverviewCard";
 import RecordGroupCard from "@/components/ui/RecordGroupCard";
 import { useAppDB } from "@/database/db";
-import { Record, RecordGroup } from "@/shared.types";
+import { RecordGroup } from "@/shared.types";
 import { Link, useFocusEffect } from "expo-router";
 import { useCallback, useState } from "react";
 import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-  const { getAllRecords, getAllRecordsGroupedByDate } = useAppDB();
+  const { getAllRecordsGroupedByDate } = useAppDB();
 
   const [recordsGroupedByDate, setRecordsGroupedByDate] = useState<RecordGroup[]>([]);
-  const [allRecords, setAllRecords] = useState<Record[]>([]);
 
   const fetchRecords = async () => {
     try {
-      const records = await getAllRecords();
       const groupedRecords = await getAllRecordsGroupedByDate();
 
-      if (!groupedRecords || !records) {
+      if (!groupedRecords) {
         throw new Error("Failed to fetch records");
       }
 
       setRecordsGroupedByDate(groupedRecords ?? []);
-      setAllRecords(records ?? []);
     } catch (error) {
       console.error(error);
       alert("Failed to fetch records");
@@ -42,7 +39,7 @@ export default function HomeScreen() {
       <View className="border-b-2 border-white py-2">
         <Text className="text-4xl font-bold text-white mx-4">June 2025</Text>
       </View>
-      <OverviewCard records={allRecords} />
+      <OverviewCard />
       <ScrollView>
         {recordsGroupedByDate.map((recordGroup) => (
           <RecordGroupCard key={recordGroup.date} data={recordGroup} />
