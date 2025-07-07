@@ -24,7 +24,7 @@ export const useAppDB = () => {
         amount INTEGER NOT NULL,
         date TEXT NOT NULL,
         category_id INTEGER NOT NULL,
-        created_at TEXT NOT NULL,
+        created_at TEXT NOT NULL
       );
     `);
   };
