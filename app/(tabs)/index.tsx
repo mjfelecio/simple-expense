@@ -19,10 +19,6 @@ export default function HomeScreen() {
     try {
       const groupedRecords = await getAllRecordsGroupedByDate();
 
-      if (!groupedRecords) {
-        throw new Error("Failed to fetch records");
-      }
-
       // We sort it descending, starting from earliest record
       const sortedRecords = groupedRecords.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -48,9 +44,16 @@ export default function HomeScreen() {
       </View>
       <OverviewCard />
       <ScrollView>
-        {recordsGroupedByDate.map((recordGroup) => (
+      { recordsGroupedByDate.length > 0 ? 
+        (recordsGroupedByDate.map((recordGroup) => (
           <RecordGroupCard key={recordGroup.date} data={recordGroup} />
-        ))}
+        )))
+      : (
+        <View className="flex-1 justify-center items-center mt-32 gap-2">
+          <Text className="text-white text-4xl font-bold">No Records Yet</Text>
+          <Text className="text-blue-200 text-sm text-center">Click the plus button below to create a new record</Text>
+        </View>
+      )}
       </ScrollView>
       <Link href={"/records/new"} asChild>
         <TouchableOpacity className="absolute bottom-10 right-10">
