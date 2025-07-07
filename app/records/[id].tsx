@@ -135,7 +135,7 @@ const RecordForm = () => {
       }
 
       setName(result.name);
-      setAmount(String(result.amount));
+      setAmount(String(Math.abs(result.amount))); // We convert the signed amount to abs cause its easier to work with
       setRawDate(new Date(result.date));
       setFormattedDate(formatDate(new Date(result.date)));
       setCategoryType(resultCategory.type);
