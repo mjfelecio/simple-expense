@@ -14,7 +14,6 @@ const RecordCard = ({ record }: Props) => {
 
   const [categoryIcon, setCategoryIcon] = useState<IconName>("question-mark");
   const [categoryColor, setCategoryColor] = useState("gray");
-  const [categoryType, setCategoryType] = useState("expense");
 
   const fetchCategoryDetails = async (id: number) => {
     try {
@@ -26,7 +25,6 @@ const RecordCard = ({ record }: Props) => {
 
       setCategoryIcon(result.icon);
       setCategoryColor(result.color);
-      setCategoryType(result.type);
     } catch (error) {
       console.error(error);
       alert(`Failed to fetch category details for ${record.name} record`);
@@ -36,8 +34,6 @@ const RecordCard = ({ record }: Props) => {
   useEffect(() => {
     fetchCategoryDetails(record.category_id);
   }, [record.category_id]);
-
-  const sign = categoryType === "expense" ? "-" : "";
 
   return (
     <Link href={`/records/${record.id}`} asChild>
@@ -52,7 +48,7 @@ const RecordCard = ({ record }: Props) => {
           <Text className="text-white text-xl font-medium">{record.name}</Text>
           <View className="flex-1"></View>
           <Text className="text-white text-xl font-medium">
-            {`${sign} ${record.amount}`}
+            {record.amount}
           </Text>
         </View>
       </TouchableHighlight>

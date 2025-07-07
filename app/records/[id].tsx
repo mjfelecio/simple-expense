@@ -61,11 +61,14 @@ const RecordForm = () => {
     }
 
     try {
+      // An expense reduces the balance while an income adds to it, hence this sign business
+      const sign = categoryType === "expense" ? "-" : ""
+
       if (isCreatingRecord) {
         // We omit the id because it isn't populated yet
         const recordData: Omit<Record, "id"> = {
           name: name.trim(),
-          amount: numericAmount,
+          amount: Number(sign + numericAmount),
           date: rawDate.toISOString(),
           category_id: categoryId,
         };
@@ -75,7 +78,7 @@ const RecordForm = () => {
         const recordData: Record = {
           id: Number(id),
           name: name.trim(),
-          amount: numericAmount,
+          amount: Number(sign + numericAmount),
           date: rawDate.toISOString(),
           category_id: categoryId,
         };

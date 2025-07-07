@@ -3,8 +3,6 @@ import React from "react";
 import { Text, View } from "react-native";
 import RecordCard from "./RecordCard";
 
-const groupBalance = -204;
-
 type Props = {
   data: RecordGroup;
 };
@@ -20,6 +18,11 @@ const RecordGroupCard = ({ data }: Props) => {
     month: "long",
     year: "numeric",
   });
+
+  // Calculate Group Balance
+  const groupBalance = records
+    .map((record) => record.amount)
+    .reduce((a, b) => a + b)
 
   return (
     <View className="mx-4 flex">
