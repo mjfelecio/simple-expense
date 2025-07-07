@@ -90,19 +90,18 @@ export const useAppDB = () => {
   };
 
   // ==> Record Functions <==
-
-  type NewRecord = Omit<Record, "id">;
-  const addRecord = async (record: NewRecord) => {
-    const { name, amount, date, category_id } = record;
+  const addRecord = async (record: Omit<Record, "id">) => {
+    const { name, amount, date, category_id, created_at } = record;
 
     await init();
 
     return await db.runAsync(
-      "INSERT INTO records (name, amount, date, category_id) VALUES (?, ?, ?, ?)",
+      "INSERT INTO records (name, amount, date, category_id, created_at) VALUES (?, ?, ?, ?, ?)",
       name,
       amount,
       date,
-      category_id
+      category_id,
+      created_at,
     );
   };
 
@@ -158,7 +157,6 @@ const getAllRecordsGroupedByDate = async (): Promise<RecordGroup[]> => {
   const mappedRecords = allRecords.map((record) => ({
     ...record, date: new Date(record.date).toDateString(),   
   }))
-
   // Using lodash's groupBy instead of Object.groupBy cause it doesn't work here for some reason
   const groupedObj = groupBy(mappedRecords, "date");
 
