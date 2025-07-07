@@ -69,9 +69,7 @@ const RecordForm = () => {
         const recordData: Omit<Record, "id"> = {
           name: name.trim(),
           amount: Number(sign + numericAmount),
-          // We only fetch the date, not the time,
-          // to prevent same dates not merging because of different times
-          date: rawDate.toDateString(),
+          date: rawDate.toISOString(),
           category_id: categoryId,
         };
 
@@ -81,7 +79,7 @@ const RecordForm = () => {
           id: Number(id),
           name: name.trim(),
           amount: Number(sign + numericAmount),
-          date: rawDate.toDateString(), // Same reason above
+          date: rawDate.toISOString(),
           category_id: categoryId,
         };
 
