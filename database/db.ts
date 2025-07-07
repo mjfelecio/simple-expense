@@ -106,7 +106,7 @@ export const useAppDB = () => {
     );
   };
 
-  const updateRecord = async (record: Record) => {
+  const updateRecord = async (record: Omit<Record, "created_at">) => {
     const { id, name, amount, date, category_id } = record;
 
     if (!id) {
