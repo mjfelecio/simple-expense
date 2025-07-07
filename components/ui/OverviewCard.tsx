@@ -1,3 +1,4 @@
+import { Record } from "@/shared.types";
 import React from "react";
 import { Text, View } from "react-native";
 
@@ -12,7 +13,7 @@ type ItemCardProps = {
   value: string;
 };
 
-const CardItem = ({ name, value }: ItemCardProps) => {
+const ItemCard = ({ name, value }: ItemCardProps) => {
   return (
     <View className="flex-1 justify-start items-center gap-1 pt-1.5">
       <Text className="text-white text-xl font-semibold">{name}</Text>
@@ -21,14 +22,18 @@ const CardItem = ({ name, value }: ItemCardProps) => {
   );
 };
 
-const OverviewCard = () => {
+type OverviewCardProp = {
+  records: Record[];
+}
+
+const OverviewCard = ({ records }: OverviewCardProp) => {
   return (
     <View className="border-4 border-white rounded-xl py-4 m-4 h-32 flex-row">
-      <CardItem name="Income" value={values["income"]} />
+      <ItemCard name="Income" value={values["income"]} />
       <View className="bg-gray-800 w-1.5 rounded-2xl"></View>
-      <CardItem name="Expenses" value={values["expense"]} />
+      <ItemCard name="Expenses" value={values["expense"]} />
       <View className="bg-gray-700 w-1.5 rounded-2xl"></View>
-      <CardItem name="Balance" value={values["balance"]} />
+      <ItemCard name="Balance" value={values["balance"]} />
     </View>
   );
 };
