@@ -11,7 +11,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function HomeScreen() {
   const { getAllRecordsGroupedByDate } = useAppDB();
 
-  const [recordsGroupedByDate, setRecordsGroupedByDate] = useState<RecordGroup[]>([]);
+  const [recordsGroupedByDate, setRecordsGroupedByDate] = useState<
+    RecordGroup[]
+  >([]);
 
   const fetchRecords = async () => {
     try {
@@ -21,7 +23,12 @@ export default function HomeScreen() {
         throw new Error("Failed to fetch records");
       }
 
-      setRecordsGroupedByDate(groupedRecords ?? []);
+      // We sort it descending, starting from earliest record
+      const sortedRecords = groupedRecords.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+
+      setRecordsGroupedByDate(sortedRecords ?? []);
     } catch (error) {
       console.error(error);
       alert("Failed to fetch records");
