@@ -149,10 +149,17 @@ export const useAppDB = () => {
 const getAllRecordsGroupedByDate = async (): Promise<RecordGroup[]> => {
   await init();
 
-  const allRecords = await db.getAllAsync<Record>("SELECT * FROM records");
+  const allRecords = await getAllRecords();
 
-  // Using lodash's groupBy instead of Object.groupBy cause it doesn't work here
-  const groupedObj = groupBy(allRecords, "date");
+  // We map the date to its date string so we only group by the date, not the time
+  // This means we can avoid situations where the records are the same date, but not same time
+  // causing them to be grouped differently
+  const mappedRecords = allRecords.map((record) => ({
+    ...record, date: new Date(record.date).toDateString(),   
+  }))
+
+  // Using lodash's groupBy instead of Object.groupBy cause it doesn't work here for some reason
+  const groupedObj = groupBy(mappedRecords, "date");
 
   const recordGroups: RecordGroup[] = Object.entries(groupedObj).map(
     ([date, records]) => ({
