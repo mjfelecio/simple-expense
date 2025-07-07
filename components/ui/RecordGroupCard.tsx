@@ -38,7 +38,7 @@ const RecordGroupCard = ({ data }: Props) => {
         </Text>
       </View>
       {records
-        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
         .map((record: Record) => (
           <RecordCard key={record.id} record={record} />
         ))}
