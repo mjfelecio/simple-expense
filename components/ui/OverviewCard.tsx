@@ -1,7 +1,7 @@
 import { useAppDB } from "@/database/db";
 import { Record } from "@/shared.types";
 import { useFocusEffect } from "expo-router";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 
 type ItemCardProps = {
@@ -20,21 +20,18 @@ const ItemCard = ({ name, value }: ItemCardProps) => {
 
 const OverviewCard = () => {
   const { getAllRecords } = useAppDB();
-
   const [totalIncome, setTotalIncome] = useState("0");
   const [totalExpense, setTotalExpense] = useState("0");
   const [totalBalance, setTotalBalance] = useState("0");
-
   const [records, setRecords] = useState<Record[]>([]);
 
   const fetchRecords = async () => {
-    try { 
+    try {
       const result = await getAllRecords();
-
       if (!result) {
         throw new Error("Failed to fetch records to populate OverviewCard");
       }
-
+      console.log(result);
       setRecords(result ?? []);
     } catch (error) {
       console.error(error);
@@ -42,8 +39,8 @@ const OverviewCard = () => {
     }
   };
 
-  const calculateValues = () => {
-    if (!records || records.length < 0) {
+  const calculateValues = useCallback(() => {
+    if (!records || records.length === 0) {
       setTotalIncome("0");
       setTotalExpense("0");
       setTotalBalance("0");
@@ -70,18 +67,23 @@ const OverviewCard = () => {
     setTotalIncome(addSeparators(incomes));
     setTotalExpense(addSeparators(expenses));
     setTotalBalance(addSeparators(balances));
-  };
+  }, [records]);
 
   function addSeparators(number: number) {
     return number.toLocaleString();
   }
 
+  // Fetch records when screen comes into focus
   useFocusEffect(
     useCallback(() => {
       fetchRecords();
-      calculateValues();
-    }, [records, calculateValues])
+    }, [])
   );
+
+  // Calculate values whenever records change
+  useEffect(() => {
+    calculateValues();
+  }, [calculateValues]);
 
   return (
     <View className="border-4 border-white rounded-xl py-4 m-4 h-32 flex-row">
