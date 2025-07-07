@@ -12,7 +12,7 @@ const RecordGroupCard = ({ data }: Props) => {
   const records = data.records;
 
   // Date info
-  const dayName = date.toLocaleDateString("en-US", { weekday: 'long' }); // Ex. Sunday
+  const dayName = date.toLocaleDateString("en-US", { weekday: "long" }); // Ex. Sunday
   const dayInMonth = date.getDate(); // Ex. 21
   const monthAndYear = date.toLocaleDateString("en-US", { // Ex. June 2025
     month: "long",
@@ -22,7 +22,7 @@ const RecordGroupCard = ({ data }: Props) => {
   // Calculate Group Balance
   const groupBalance = records
     .map((record) => record.amount)
-    .reduce((a, b) => a + b)
+    .reduce((a, b) => a + b);
 
   return (
     <View className="mx-4 flex">
@@ -37,9 +37,11 @@ const RecordGroupCard = ({ data }: Props) => {
           {groupBalance}
         </Text>
       </View>
-      {records.map((record: Record) => (
-        <RecordCard key={record.id} record={record} />
-      ))}
+      {records
+        .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+        .map((record: Record) => (
+          <RecordCard key={record.id} record={record} />
+        ))}
     </View>
   );
 };
