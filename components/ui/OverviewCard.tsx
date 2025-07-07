@@ -34,7 +34,6 @@ const OverviewCard = () => {
       setRecords(result ?? []);
     } catch (error) {
       console.error(error);
-      alert("Failed to fetch records to populate OverviewCard");
     }
   };
 
